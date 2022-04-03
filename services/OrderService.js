@@ -2,44 +2,16 @@ var _ = require('lodash')
 var path = require('path')
 var orm = require('orm')
 var dao = require(path.join(process.cwd(), 'dao/DAO'))
+var AttributeDao = require(path.join(process.cwd(), 'dao/AttributeDAO'))
 var fs = require('fs')
 var Promise = require('bluebird')
 var uniqid = require('uniqid')
 var http = require('http')
 
-//下载文件
-async function downloadFile(url, pahtName) {
-  await http.get(url, (res) => {
-    var data = ''
-    res.setEncoding('binary') //一定要设置response的编码为binary否则会下载下来的图片打不开
-    res.on('data', function (chunk) {
-      data += chunk
-    })
-    res.on('end', () => {
-      fs.writeFileSync(`./txt/${pahtName}.txt`, data, 'binary')
-    })
-  })
-}
-
 // 获取检测数据
 function chartData(path) {
   let x = []
   let y = []
-
-  // await downloadFile(
-  //   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-  //   '5'
-  // )
-
-  // await downloadFile(
-  //   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-  //   '4'
-  // )
-
-  // const file = downloadFile(
-  //   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-  //   '1'
-  // )
 
   const file = path
 
@@ -248,87 +220,106 @@ module.exports.createOrder = function (params, cb) {
 }
 
 module.exports.getAllOrders = function (params, cb) {
-  var conditions = {}
-  if (!params.pagenum || params.pagenum <= 0) return cb('pagenum 参数错误')
-  if (!params.pagesize || params.pagesize <= 0) return cb('pagesize 参数错误')
-  conditions['columns'] = {}
-  console.log('--------', params, '--------')
-  if (params.order_id) {
-    console.log('--------', params.order_id)
-    conditions['columns']['order_id'] = params.order_id
-  }
+  if (!params.create_time) {
+    console.log('into this')
+    var conditions = {}
+    if (!params.pagenum || params.pagenum <= 0) return cb('pagenum 参数错误')
+    if (!params.pagesize || params.pagesize <= 0) return cb('pagesize 参数错误')
+    conditions['columns'] = {}
+    console.log('--------', params, '--------')
 
-  if (params.user_id) {
-    console.log('--------', params.user_id)
-    conditions['columns']['user_id'] = params.user_id
-  }
-
-  if (params.pay_status) {
-    conditions['columns']['pay_status'] = params.pay_status
-  }
-
-  if (params.is_send) {
-    if (params.is_send == 1) {
-      conditions['columns']['is_send'] = '是'
-    } else {
-      conditions['columns']['is_send'] = '否'
+    if (params.user_id) {
+      conditions['columns']['user_id'] = params.user_id
     }
-  }
 
-  if (params.order_fapiao_title) {
-    if (params.order_fapiao_title == 1) {
-      conditions['columns']['order_fapiao_title'] = '个人'
-    } else {
-      conditions['columns']['order_fapiao_title'] = '公司'
+    if (params.pay_status) {
+      conditions['columns']['pay_status'] = params.pay_status
     }
-  }
 
-  if (params.order_fapiao_company) {
-    conditions['columns']['order_fapiao_company'] = orm.like(
-      '%' + params.order_fapiao_company + '%'
-    )
-  }
-
-  if (params.order_fapiao_content) {
-    conditions['columns']['order_fapiao_content'] = orm.like(
-      '%' + params.order_fapiao_content + '%'
-    )
-  }
-
-  if (params.consignee_addr) {
-    conditions['columns']['consignee_addr'] = orm.like(
-      '%' + params.consignee_addr + '%'
-    )
-  }
-
-  dao.countByConditions('OrderModel', conditions, function (err, count) {
-    if (err) return cb(err)
-    pagesize = params.pagesize
-    pagenum = params.pagenum
-    pageCount = Math.ceil(count / pagesize)
-    offset = (pagenum - 1) * pagesize
-    if (offset >= count) {
-      offset = count
+    if (params.is_send) {
+      if (params.is_send == 1) {
+        conditions['columns']['is_send'] = '是'
+      } else {
+        conditions['columns']['is_send'] = '否'
+      }
     }
-    limit = pagesize
 
-    // 构建条件
-    conditions['offset'] = offset
-    conditions['limit'] = limit
-    // conditions["only"] =
-    conditions['order'] = '-create_time'
+    if (params.order_fapiao_title) {
+      if (params.order_fapiao_title == 1) {
+        conditions['columns']['order_fapiao_title'] = '个人'
+      } else {
+        conditions['columns']['order_fapiao_title'] = '公司'
+      }
+    }
 
-    dao.list('OrderModel', conditions, function (err, orders) {
+    if (params.order_fapiao_company) {
+      conditions['columns']['order_fapiao_company'] = orm.like(
+        '%' + params.order_fapiao_company + '%'
+      )
+    }
+
+    if (params.order_fapiao_content) {
+      conditions['columns']['order_fapiao_content'] = orm.like(
+        '%' + params.order_fapiao_content + '%'
+      )
+    }
+
+    if (params.consignee_addr) {
+      conditions['columns']['consignee_addr'] = orm.like(
+        '%' + params.consignee_addr + '%'
+      )
+    }
+
+    dao.countByConditions('OrderModel', conditions, function (err, count) {
       if (err) return cb(err)
-      var resultDta = {}
-      resultDta['total'] = count
-      resultDta['pagenum'] = pagenum
-      resultDta['goods'] = _.map(orders, function (order) {
-        return order //_.omit(order,);
+      pagesize = params.pagesize
+      pagenum = params.pagenum
+      pageCount = Math.ceil(count / pagesize)
+      offset = (pagenum - 1) * pagesize
+      if (offset >= count) {
+        offset = count
+      }
+      limit = pagesize
+
+      // 构建条件
+      conditions['offset'] = offset
+      conditions['limit'] = limit
+      // conditions["only"] =
+      conditions['order'] = '-create_time'
+
+      dao.list('OrderModel', conditions, function (err, orders) {
+        if (err) return cb(err)
+        var resultDta = {}
+        resultDta['total'] = count
+        resultDta['pagenum'] = pagenum
+        resultDta['goods'] = _.map(orders, function (order) {
+          return order //_.omit(order,);
+        })
+        cb(err, resultDta)
       })
-      cb(err, resultDta)
     })
-  })
+  } else {
+    console.log('ye')
+    // pagenum = params.pagenum
+    // pageCount = Math.ceil(count / pagesize)
+    // offset = (pagenum - 1) * pagesize
+    // if (offset >= count) {
+    //   offset = count
+    // }
+    // limit = pagesize
+    AttributeDao.timeList(
+      params.create_time[0],
+      params.create_time[1],
+      params.pagesize,
+      function (err, statics, count) {
+        if (err) return cb(err)
+        var resultDta = {}
+        resultDta['all'] = statics
+        resultDta['start'] = count
+        cb(err, resultDta)
+      }
+    )
+  }
 }
 
 module.exports.getOrder = function (orderId, cb) {

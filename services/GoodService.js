@@ -71,41 +71,6 @@ function downloadFile(url, pahtName) {
  * @return {[type]}           [description]
  */
 
-async function chartData() {
-  let x = []
-  let y = []
-
-  // await downloadFile(
-  //   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-  //   '4'
-  // )
-
-  // const file = downloadFile(
-  //   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-  //   '1'
-  // )
-  const file = './txt/4.txt'
-
-  // read contents of the file
-  const data = fs.readFileSync(file, 'UTF-8')
-
-  // split the contents by new line
-  const lines = data.split(/\r?\n/)
-
-  // print all lines
-  lines.forEach((line) => {
-    const each = line.split(',')
-    x.push(each[0])
-    y.push(each[1])
-  })
-
-  console.log(x, y)
-  return {
-    x: x,
-    y: y,
-  }
-}
-
 /**
  * 通过参数生成产品基本信息
  *
@@ -184,11 +149,9 @@ function generateGoodInfo(params) {
     info['is_del'] = '0'
 
     if (params.hot_mumber) {
-      hot_num = parseInt(params.hot_mumber)
-      if (isNaN(hot_num) || hot_num < 0) return reject('热销品数量格式不正确')
-      info['hot_mumber'] = hot_num
-    } else {
-      info['hot_mumber'] = 0
+ 
+      info['hot_mumber'] = params.hot_mumber
+
     }
 
     info['is_promote'] = info['is_promote'] ? info['is_promote'] : false
@@ -229,7 +192,10 @@ function checkGoodName(info) {
 function createGoodInfo(info) {
   return new Promise(function (resolve, reject) {
     dao.create('GoodModel', _.clone(info), function (err, newGood) {
-      if (err) return reject('创建商品基本信息失败')
+      if (err)  {
+        console.log(err);
+       return reject('创建商品基本信息失败')
+      }
       newGood.goods_cat = newGood.getGoodsCat()
       info.good = newGood
       return resolve(info)

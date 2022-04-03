@@ -26,6 +26,9 @@ router.get(
       pagenum: req.query.pagenum,
       pagesize: req.query.pagesize,
     }
+    if (req.query.create_time) {
+      conditions['create_time'] = req.query.create_time
+    }
 
     if (req.query.order_id) {
       conditions['order_id'] = req.query.order_id
