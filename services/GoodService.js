@@ -80,19 +80,19 @@ function downloadFile(url, pahtName) {
 function generateGoodInfo(params) {
   return new Promise(function (resolve, reject) {
     var info = {}
-    if (params.goods_id) info['goods_id'] = params.goods_id
-    if (!params.goods_name) return reject('商品名称不能为空')
-    info['goods_name'] = params.goods_name
+    if (params.chip_id) info['chip_id'] = params.chip_id
+    if (!params.chip_name) return reject('商品名称不能为空')
+    info['chip_name'] = params.chip_name
 
-    if (!params.goods_price) return reject('商品价格不能为空')
-    var price = parseFloat(params.goods_price)
+    if (!params.chip_price) return reject('商品价格不能为空')
+    var price = parseFloat(params.chip_price)
     if (isNaN(price) || price < 0) return reject('商品价格不正确')
-    info['goods_price'] = price
+    info['chip_price'] = price
 
-    if (!params.goods_number) return reject('商品数量不能为空')
-    var num = parseInt(params.goods_number)
+    if (!params.chip_number) return reject('商品数量不能为空')
+    var num = parseInt(params.chip_number)
     if (isNaN(num) || num < 0) return reject('商品数量不正确')
-    info['goods_number'] = num
+    info['chip_number'] = num
 
     if (!params.goods_cat) return reject('商品没有设置所属分类')
     var cats = params.goods_cat.split(',')
@@ -107,21 +107,21 @@ function generateGoodInfo(params) {
       info['cat_id'] = cats[2]
     }
 
-    if (params.goods_weight) {
-      // weight = parseFloat(params.goods_weight);
+    if (params.chip_desc) {
+      // weight = parseFloat(params.chip_desc);
       // if(isNaN(weight) || weight < 0) return reject("商品重量格式不正确");
-      info['goods_weight'] = params.goods_weight
+      info['chip_desc'] = params.chip_desc
     } else {
-      info['goods_weight'] = ''
+      info['chip_desc'] = ''
     }
     if (params.goods_introduce) {
       info['goods_introduce'] = params.goods_introduce
     }
 
-    if (params.goods_big_logo) {
-      info['goods_big_logo'] = params.goods_big_logo
+    if (params.line) {
+      info['line'] = params.line
     } else {
-      info['goods_big_logo'] = ''
+      info['line'] = ''
     }
 
     if (params.goods_small_logo) {
@@ -148,9 +148,9 @@ function generateGoodInfo(params) {
     info['upd_time'] = Date.parse(new Date()) / 1000
     info['is_del'] = '0'
 
-    if (params.hot_mumber) {
+    if (params.color_mumber) {
  
-      info['hot_mumber'] = params.hot_mumber
+      info['color_mumber'] = params.color_mumber
 
     }
 
@@ -172,11 +172,11 @@ function checkGoodName(info) {
   return new Promise(function (resolve, reject) {
     dao.findOne(
       'GoodModel',
-      { goods_name: info.goods_name, is_del: '0' },
+      { chip_name: info.chip_name, is_del: '0' },
       function (err, good) {
         if (err) return reject(err)
         if (!good) return resolve(info)
-        if (good.goods_id == info.goods_id) return resolve(info)
+        if (good.chip_id == info.chip_id) return resolve(info)
         return reject('商品名称已存在')
       }
     )
@@ -198,21 +198,24 @@ function createGoodInfo(info) {
       }
       newGood.goods_cat = newGood.getGoodsCat()
       info.good = newGood
+      console.log('llll',info.good.chip_id);
       return resolve(info)
     })
   })
 }
 
 function updateGoodInfo(info) {
+  console.log('lllll',info.chip_id)
   return new Promise(function (resolve, reject) {
-    if (!info.goods_id) return reject('商品ID不存在')
+    if (!info.chip_id) return reject('商品ID不存在')
     dao.update(
       'GoodModel',
-      info.goods_id,
+      info.chip_id,
       _.clone(info),
       function (err, newGood) {
         if (err) return reject('更新商品基本信息失败')
         info.good = newGood
+        
         return resolve(info)
       }
     )
@@ -227,10 +230,10 @@ function updateGoodInfo(info) {
  */
 function getGoodInfo(info) {
   return new Promise(function (resolve, reject) {
-    if (!info || !info.goods_id || isNaN(info.goods_id))
+    if (!info || !info.chip_id || isNaN(info.chip_id))
       return reject('商品ID格式不正确')
 
-    dao.show('GoodModel', info.goods_id, function (err, good) {
+    dao.show('GoodModel', info.chip_id, function (err, good) {
       if (err) return reject('获取商品基本信息失败')
       good.goods_cat = good.getGoodsCat()
       info['good'] = good
@@ -281,14 +284,15 @@ function createGoodPic(pic) {
  * @param  {[type]} newGood 商品基本信息
  */
 function doUpdateGoodPics(info) {
+  // console.log('--------------------',info.good)
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.goods_id) return reject('更新商品图片失败')
+    if (!good.chip_id) return reject('更新商品图片失败')
 
     if (!info.pics) return resolve(info)
     dao.list(
       'GoodPicModel',
-      { columns: { goods_id: good.goods_id } },
+      { columns: { chip_id: good.chip_id } },
       function (err, oldpics) {
         if (err) return reject('获取商品图片列表失败')
 
@@ -361,7 +365,7 @@ function doUpdateGoodPics(info) {
             batchFns.push(
               clipImage(src, path.join(process.cwd(), pic.pics_sma), 200, 200)
             )
-            pic.goods_id = good.goods_id
+            pic.chip_id = good.chip_id
             // 2.2 数据库中新建数据记录
             batchFns.push(createGoodPic(pic))
           }
@@ -407,10 +411,10 @@ function createGoodAttribute(goodAttribute) {
 function doUpdateGoodAttributes(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.goods_id) return reject('获取商品图片必须先获取商品信息')
+    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
     if (!info.attrs) return resolve(info)
     // var GoodAttributeModel = dao.getModel("GoodAttributeModel");
-    goodAttributeDao.clearGoodAttributes(good.goods_id, function (err) {
+    goodAttributeDao.clearGoodAttributes(good.chip_id, function (err) {
       if (err) return reject('清理原始的商品参数失败')
 
       var newAttrs = info.attrs ? info.attrs : []
@@ -418,7 +422,7 @@ function doUpdateGoodAttributes(info) {
       if (newAttrs) {
         var createFns = []
         _(newAttrs).forEach(function (newattr) {
-          newattr.goods_id = good.goods_id
+          newattr.chip_id = good.chip_id
           if (newattr.attr_value) {
             if (newattr.attr_value instanceof Array) {
               newattr.attr_value = newattr.attr_value.join(',')
@@ -452,11 +456,11 @@ function doUpdateGoodAttributes(info) {
 function doGetAllPics(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.goods_id) return reject('获取商品图片必须先获取商品信息')
+    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
     // 3. 组装最新的数据挂载在“info”中“good”对象下
     dao.list(
       'GoodPicModel',
-      { columns: { goods_id: good.goods_id } },
+      { columns: { chip_id: good.chip_id } },
       function (err, goodPics) {
         if (err) return reject('获取所有商品图片列表失败')
         _(goodPics).forEach(function (pic) {
@@ -495,8 +499,8 @@ function doGetAllPics(info) {
 function doGetAllAttrs(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.goods_id) return reject('获取商品图片必须先获取商品信息')
-    goodAttributeDao.list(good.goods_id, function (err, goodAttrs) {
+    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
+    goodAttributeDao.list(good.chip_id, function (err, goodAttrs) {
       if (err) return reject('获取所有商品参数列表失败')
       info.good.attrs = goodAttrs
       resolve(info)
@@ -520,7 +524,7 @@ module.exports.createGood = function (params, cb) {
     // 更新商品图片
     .then(doUpdateGoodPics)
     // 更新商品参数
-    .then(doUpdateGoodAttributes)
+    // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
     // 创建成功
@@ -569,7 +573,7 @@ module.exports.getAllGoods = function (params, cb) {
 
   conditions['columns'] = {}
   if (params.query) {
-    conditions['columns']['goods_name'] = orm.like('%' + params.query + '%')
+    conditions['columns']['chip_name'] = orm.like('%' + params.query + '%')
   }
   conditions['columns']['is_del'] = '0'
 
@@ -588,18 +592,18 @@ module.exports.getAllGoods = function (params, cb) {
     conditions['offset'] = offset
     conditions['limit'] = limit
     conditions['only'] = [
-      'goods_id',
-      'goods_name',
-      'goods_price',
-      'goods_weight',
+      'chip_id',
+      'chip_name',
+      'chip_price',
+      'chip_desc',
       'goods_state',
       'add_time',
-      'goods_number',
+      'chip_number',
       'upd_time',
-      'hot_mumber',
+      'color_mumber',
       'is_promote',
       'goods_introduce',
-      'goods_big_logo',
+      'line',
     ]
     conditions['order'] = '-add_time'
 
@@ -615,7 +619,7 @@ module.exports.getAllGoods = function (params, cb) {
           good,
           // chartdata,
           'is_del',
-          // 'goods_big_logo',
+          // 'line',
           'goods_small_logo',
           'delete_time'
         )
@@ -633,7 +637,7 @@ module.exports.getAllGoods = function (params, cb) {
  * @param  {Function} cb     回调函数
  */
 module.exports.updateGood = function (id, params, cb) {
-  params.goods_id = id
+  params.chip_id = id
   // 验证参数 & 生成数据
   generateGoodInfo(params)
     // 检查商品名称
@@ -643,7 +647,7 @@ module.exports.updateGood = function (id, params, cb) {
     // 更新商品图片
     .then(doUpdateGoodPics)
     // 更新商品参数
-    .then(doUpdateGoodAttributes)
+    // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
     // 创建成功
@@ -658,15 +662,15 @@ module.exports.updateGood = function (id, params, cb) {
 /**
  * 更新商品图片
  *
- * @param  {[type]}   goods_id 商品ID
+ * @param  {[type]}   chip_id 商品ID
  * @param  {[type]}   pics     商品图片
  * @param  {Function} cb       回调函数
  */
-module.exports.updateGoodPics = function (goods_id, pics, cb) {
-  if (!goods_id) return cb('商品ID不能为空')
-  if (isNaN(goods_id)) return cb('商品ID必须为数字')
+module.exports.updateGoodPics = function (chip_id, pics, cb) {
+  if (!chip_id) return cb('商品ID不能为空')
+  if (isNaN(chip_id)) return cb('商品ID必须为数字')
 
-  getGoodInfo({ goods_id: goods_id, pics: pics })
+  getGoodInfo({ chip_id: chip_id, pics: pics })
     .then(doUpdateGoodPics)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
@@ -678,9 +682,9 @@ module.exports.updateGoodPics = function (goods_id, pics, cb) {
     })
 }
 
-module.exports.updateGoodAttributes = function (goods_id, attrs, cb) {
-  getGoodInfo({ goods_id: goods_id, attrs: attrs })
-    .then(doUpdateGoodAttributes)
+module.exports.updateGoodAttributes = function (chip_id, attrs, cb) {
+  getGoodInfo({ chip_id: chip_id, attrs: attrs })
+    // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
     .then(function (info) {
@@ -691,8 +695,8 @@ module.exports.updateGoodAttributes = function (goods_id, attrs, cb) {
     })
 }
 
-module.exports.updateGoodsState = function (goods_id, state, cb) {
-  getGoodInfo({ goods_id: goods_id, goods_state: state })
+module.exports.updateGoodsState = function (chip_id, state, cb) {
+  getGoodInfo({ chip_id: chip_id, goods_state: state })
     .then(updateGoodInfo)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
@@ -711,7 +715,7 @@ module.exports.updateGoodsState = function (goods_id, state, cb) {
  * @param  {Function} cb 回调函数
  */
 module.exports.getGoodById = function (id, cb) {
-  getGoodInfo({ goods_id: id })
+  getGoodInfo({ chip_id: id })
     .then(doGetAllPics)
     .then(doGetAllAttrs)
     .then(function (info) {

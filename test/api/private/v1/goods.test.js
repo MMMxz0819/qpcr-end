@@ -17,9 +17,9 @@ describe(url + " good api testing",function(){
 	var token;
 
 	var testGood = {
-		"goods_name" : "__test_good_name",
-		"goods_price" : 20,
-		"goods_number" : 30
+		"chip_name" : "__test_good_name",
+		"chip_price" : 20,
+		"chip_number" : 30
 	}
 
 	before(function(done) {
@@ -31,8 +31,8 @@ describe(url + " good api testing",function(){
 	});
 
 	after(function(done) {
-		if(testGood.goods_id && testGood.goods_id > 0) {
-			dao.destroy("GoodModel",testGood.goods_id,function(err){
+		if(testGood.chip_id && testGood.chip_id > 0) {
+			dao.destroy("GoodModel",testGood.chip_id,function(err){
 				done();
 			});
 		}
@@ -60,7 +60,7 @@ describe(url + " good api testing",function(){
 		.query({
 			"pagenum" : 1,
 			"pagesize" : 1,
-			"query" : testGood.goods_name
+			"query" : testGood.chip_name
 		})
 		.end(function(err,res){
 			chai.assert.equal(res.body.meta.status,200,res.body.meta.msg);
@@ -70,8 +70,8 @@ describe(url + " good api testing",function(){
 	});
 
 	it("test to delete good",function(done) {
-		chai.assert.isNotNull(testGood.goods_id,"The goods_id is null");
-		var deleteURL = url + "/" + testGood.goods_id;
+		chai.assert.isNotNull(testGood.chip_id,"The chip_id is null");
+		var deleteURL = url + "/" + testGood.chip_id;
 		chai
 		.request(app)
 		.del(deleteURL)
@@ -80,7 +80,7 @@ describe(url + " good api testing",function(){
 			chai.assert.equal(res.body.meta.status,200,res.body.meta.msg);
 			dao.findOne(
 				"GoodModel",
-				{"goods_id":testGood.goods_id},
+				{"chip_id":testGood.chip_id},
 				function(err,good) {
 					chai.assert.isNull(err,err);
 					chai.assert.equal(good.is_del,'1',"Delete failure");

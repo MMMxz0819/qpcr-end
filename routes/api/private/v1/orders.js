@@ -30,8 +30,12 @@ router.get(
       conditions['create_time'] = req.query.create_time
     }
 
-    if (req.query.order_id) {
-      conditions['order_id'] = req.query.order_id
+     if (req.query.static_number) {
+      conditions['static_number'] = req.query.static_number
+    }
+
+    if (req.query.static_id) {
+      conditions['static_id'] = req.query.static_id
     }
 
     if (req.query.user_id) {
@@ -40,20 +44,20 @@ router.get(
     if (req.query.pay_status) {
       conditions['pay_status'] = req.query.pay_status
     }
-    if (req.query.is_send) {
-      conditions['is_send'] = req.query.is_send
+    if (req.query.test_name) {
+      conditions['test_name'] = req.query.test_name
     }
-    if (req.query.order_fapiao_title) {
-      conditions['order_fapiao_title'] = req.query.order_fapiao_title
+    if (req.query.static_path) {
+      conditions['static_path'] = req.query.static_path
     }
-    if (req.query.order_fapiao_company) {
-      conditions['order_fapiao_company'] = req.query.order_fapiao_company
-    }
-    if (req.query.order_fapiao_content) {
-      conditions['order_fapiao_content'] = req.query.order_fapiao_content
-    }
+    // if (req.query.order_fapiao_content) {
+    //   conditions['order_fapiao_content'] = req.query.order_fapiao_content
+    // }
     if (req.query.consignee_addr) {
       conditions['consignee_addr'] = req.query.consignee_addr
+    }
+    if (req.query.chart) {
+      conditions['chart'] = req.query.chart
     }
 
     orderServ.getAllOrders(conditions, function (err, result) {
@@ -121,5 +125,25 @@ router.post(
     // return res.sendResult('111', 201, 'get')
   }
 )
+
+router.delete("/:id",
+	// 参数验证
+	function(req,res,next) {
+		if(!req.params.id) {
+			return res.sendResult(null,400,"检测ID不能为空");
+		}
+		if(isNaN(parseInt(req.params.id))) return res.sendResult(null,400,"检测ID必须是数字");
+		next();
+	},
+	// 业务逻辑
+	function(req,res,next) {
+		orderServ.deleteStatic(req.params.id,function(err){
+			if(err)
+				return res.sendResult(null,400,"删除失败");
+			else
+				return res.sendResult(null,200,"删除成功");
+		})(req,res,next);
+	}
+);
 
 module.exports = router

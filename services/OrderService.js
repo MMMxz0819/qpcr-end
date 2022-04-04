@@ -10,6 +10,7 @@ var http = require('http')
 
 // 获取检测数据
 function chartData(path) {
+  let total_y = []
   let x = []
   let y = []
 
@@ -25,11 +26,17 @@ function chartData(path) {
   lines.forEach((line) => {
     const each = line.split(',')
     x.push(each[0])
-    y.push(each[1])
-    console.log(`${each[0]},${each[1]}`)
+    let a = each.splice(1, each.length - 1)
+    total_y.push(a)
   })
 
-  // console.log(x, y)
+  let length = total_y[0].length
+
+  for (let i = 0; i < length; i++) {
+    let Y_one = total_y.map((v) => v[i])
+    y.push(Y_one)
+  }
+
   return {
     x: x,
     y: y,
@@ -39,64 +46,46 @@ function chartData(path) {
 function doCheckOrderParams(params) {
   return new Promise(function (resolve, reject) {
     var info = {}
-    if (params.order_id) info.order_id = params.order_id
+    if (params.static_id) info.static_id = params.static_id
 
-    if (!params.order_id) {
+    if (!params.static_id) {
       if (!params.user_id) return reject('用户ID不能为空')
       if (isNaN(parseInt(params.user_id))) return reject('用户ID必须是数字')
       info.user_id = params.user_id
     }
 
-    if (!params.order_id) info.order_number = 'itcast-' + uniqid()
+    if (!params.static_id) info.static_number = 'itcast-' + uniqid()
 
-    if (!params.order_price) return reject('订单价格不能为空')
-    if (isNaN(parseFloat(params.order_price)))
+    if (!params.static_price) return reject('订单价格不能为空')
+    if (isNaN(parseFloat(params.static_price)))
       return reject('订单价格必须为数字')
-    info.order_price = params.order_price
+    info.static_price = params.static_price
 
-    if (params.order_pay) {
-      info.order_pay = params.order_pay
+    if (params.static_chip) {
+      info.static_chip = params.static_chip
     } else {
-      info.order_pay = '0'
-    }
-    if (params.is_send) {
-      if (params.is_send == 1) {
-        info.is_send = '是'
-      } else {
-        info.is_send = '否'
-      }
-    } else {
-      info.is_send = '否'
+      info.static_chip = '0'
     }
 
-    if (params.trade_no) {
-      info.trade_no = '否'
-    } else {
-      info.trade_no = ''
-    }
-
-    if (params.order_fapiao_title) {
-      if (
-        params.order_fapiao_title != '个人' &&
-        params.order_fapiao_title != '公司'
-      )
+    if (params.test_name) {
+      if (params.test_name != '个人' && params.test_name != '公司')
         return reject('发票抬头必须是 个人 或 公司')
-      info.order_fapiao_title = params.order_fapiao_title
+      info.test_name = params.test_name
     } else {
-      info.order_fapiao_title = '个人'
+      info.test_name = '个人'
     }
 
-    if (params.order_fapiao_company) {
-      info.order_fapiao_company = params.order_fapiao_company
+    if (params.static_path) {
+      info.static_path = params.static_path
     } else {
-      info.order_fapiao_company = ''
+      info.static_path = ''
     }
 
-    if (params.order_fapiao_content) {
-      info.order_fapiao_content = params.order_fapiao_content
-    } else {
-      info.order_fapiao_content = ''
-    }
+    // if (params.order_fapiao_content) {
+    //   info.order_fapiao_content = params.order_fapiao_content
+    // } else {
+    //   info.order_fapiao_content = ''
+    // }
 
     if (params.consignee_addr) {
       info.consignee_addr = params.consignee_addr
@@ -109,7 +98,7 @@ function doCheckOrderParams(params) {
     }
 
     info.pay_status = '0'
-    if (params.order_id) info.create_time = Date.parse(new Date()) / 1000
+    if (params.static_id) info.create_time = Date.parse(new Date()) / 1000
     info.update_time = Date.parse(new Date()) / 1000
 
     resolve(info)
@@ -143,10 +132,10 @@ function doAddOrderGoods(info) {
 
     if (orderGoods && orderGoods.length > 0) {
       var fns = []
-      var goods_total_price = _.sum(_.map(orderGoods, 'goods_price'))
+      var goods_total_price = _.sum(_.map(orderGoods, 'chip_price'))
 
       _(orderGoods).forEach(function (orderGood) {
-        orderGood.order_id = info.order.order_id
+        orderGood.static_id = info.order.static_id
         orderGood.goods_total_price = goods_total_price
         fns.push(doCreateOrderGood(orderGood))
       })
@@ -170,9 +159,12 @@ function doGetAllOrderGoods(info) {
 
     dao.list(
       'OrderGoodModel',
-      { columns: { order_id: info.order.order_id } },
+      { columns: { static_id: info.order.static_id } },
       function (err, orderGoods) {
-        if (err) return reject('获取订单商品列表失败')
+        if (err) {
+          console.log(err)
+          return reject('获取订单商品列表失败')
+        }
 
         info.order.goods = orderGoods
         resolve(info)
@@ -183,7 +175,7 @@ function doGetAllOrderGoods(info) {
 
 function doGetOrder(info) {
   return new Promise(function (resolve, reject) {
-    dao.show('OrderModel', info.order_id, function (err, newOrder) {
+    dao.show('OrderModel', info.static_id, function (err, newOrder) {
       if (err) return reject('获取订单详情失败')
       if (!newOrder) return reject('订单ID不能存在')
       info.order = newOrder
@@ -196,7 +188,7 @@ function doUpdateOrder(info) {
   return new Promise(function (resolve, reject) {
     dao.update(
       'OrderModel',
-      info.order_id,
+      info.static_id,
       _.clone(info),
       function (err, newOrder) {
         if (err) return reject('更新失败')
@@ -205,6 +197,31 @@ function doUpdateOrder(info) {
       }
     )
   })
+}
+
+/**
+ * 删除检测数据
+ *
+ * @param  {[type]}   id 检测ID
+ * @param  {Function} cb 回调函数
+ */
+module.exports.deleteStatic = function (id, cb) {
+  if (!id) return cb('检测ID不能为空')
+  if (isNaN(id)) return cb('检测ID必须为数字')
+  dao.update(
+    'OrderModel',
+    id,
+    {
+      is_del: '1',
+      delete_time: Date.parse(new Date()) / 1000,
+      update_time: Date.parse(new Date()) / 1000,
+    },
+    function (err) {
+      if (err) return cb(err)
+      cb(null)
+    }
+  )
+  console.log('111111111')
 }
 
 module.exports.createOrder = function (params, cb) {
@@ -220,13 +237,19 @@ module.exports.createOrder = function (params, cb) {
 }
 
 module.exports.getAllOrders = function (params, cb) {
-  if (!params.create_time) {
-    console.log('into this')
+  if (!params.chart) {
+    console.log(params)
     var conditions = {}
     if (!params.pagenum || params.pagenum <= 0) return cb('pagenum 参数错误')
     if (!params.pagesize || params.pagesize <= 0) return cb('pagesize 参数错误')
     conditions['columns'] = {}
-    console.log('--------', params, '--------')
+
+    if (params.create_time) {
+      conditions['columns']['create_time'] = orm.between(
+        params.create_time[0],
+        params.create_time[1]
+      )
+    }
 
     if (params.user_id) {
       conditions['columns']['user_id'] = params.user_id
@@ -236,39 +259,37 @@ module.exports.getAllOrders = function (params, cb) {
       conditions['columns']['pay_status'] = params.pay_status
     }
 
-    if (params.is_send) {
-      if (params.is_send == 1) {
-        conditions['columns']['is_send'] = '是'
-      } else {
-        conditions['columns']['is_send'] = '否'
-      }
-    }
-
-    if (params.order_fapiao_title) {
-      if (params.order_fapiao_title == 1) {
-        conditions['columns']['order_fapiao_title'] = '个人'
-      } else {
-        conditions['columns']['order_fapiao_title'] = '公司'
-      }
-    }
-
-    if (params.order_fapiao_company) {
-      conditions['columns']['order_fapiao_company'] = orm.like(
-        '%' + params.order_fapiao_company + '%'
+    if (params.test_name) {
+      conditions['columns']['test_name'] = orm.like(
+        '%' + params.test_name + '%'
       )
     }
 
-    if (params.order_fapiao_content) {
-      conditions['columns']['order_fapiao_content'] = orm.like(
-        '%' + params.order_fapiao_content + '%'
+    if (params.static_number) {
+      conditions['columns']['static_number'] = orm.like(
+        '%' + params.static_number + '%'
       )
     }
+
+    if (params.static_path) {
+      conditions['columns']['static_path'] = orm.like(
+        '%' + params.static_path + '%'
+      )
+    }
+
+    // if (params.order_fapiao_content) {
+    //   conditions['columns']['order_fapiao_content'] = orm.like(
+    //     '%' + params.order_fapiao_content + '%'
+    //   )
+    // }
 
     if (params.consignee_addr) {
       conditions['columns']['consignee_addr'] = orm.like(
         '%' + params.consignee_addr + '%'
       )
     }
+
+    conditions['columns']['is_del'] = '0'
 
     dao.countByConditions('OrderModel', conditions, function (err, count) {
       if (err) return cb(err)
@@ -293,7 +314,13 @@ module.exports.getAllOrders = function (params, cb) {
         resultDta['total'] = count
         resultDta['pagenum'] = pagenum
         resultDta['goods'] = _.map(orders, function (order) {
-          return order //_.omit(order,);
+          return _.omit(
+            order,
+            // chartdata,
+            'is_del',
+
+            'delete_time'
+          ) //_.omit(order,);
         })
         cb(err, resultDta)
       })
@@ -326,10 +353,10 @@ module.exports.getOrder = function (orderId, cb) {
   if (!orderId) return cb('用户ID不能为空')
   if (isNaN(parseInt(orderId))) return cb('用户ID必须是数字')
 
-  doGetOrder({ order_id: orderId })
+  doGetOrder({ static_id: orderId })
     .then(doGetAllOrderGoods)
     .then(function (info) {
-      const ddate = chartData(info.order.order_fapiao_company)
+      const ddate = chartData(info.order.static_path)
       cb(null, { ...info.order, ddate })
     })
     .catch(function (err) {
@@ -340,7 +367,7 @@ module.exports.getOrder = function (orderId, cb) {
 module.exports.updateOrder = function (orderId, params, cb) {
   if (!orderId) return cb('用户ID不能为空')
   if (isNaN(parseInt(orderId))) return cb('用户ID必须是数字')
-  params['order_id'] = orderId
+  params['static_id'] = orderId
   doCheckOrderParams(params)
     .then(doUpdateOrder)
     .then(doGetAllOrderGoods)

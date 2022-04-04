@@ -1,22 +1,22 @@
 module.exports = function(db,callback){
 	// 用户模型
 	db.define("OrderModel",{
-		order_id : {type: 'serial', key: true},
+		static_id : {type: 'serial', key: true},
 		user_id : Number,
-		order_number : String,
-		order_price : Number,
-		order_pay : [1,2,3],
-		is_send : ["是","否"],
-		trade_no : String,
-		order_fapiao_title : ["个人","公司"],
-		order_fapiao_company : String,
-		order_fapiao_content : String,
+		static_number : String,
+		static_price : Number,
+		static_chip : [1,2,3],
+		test_name : ["个人","公司"],
+		static_path : String,
+		// order_fapiao_content : String,
 		consignee_addr : String,
 		pay_status : ['0','1'],
 		create_time : Number,
-		update_time : Number
+		update_time : Number,
+		is_del : ['0','1'],	// 0: 正常 , 1: 删除
+		delete_time : Number,
 	},{
-		table : "sp_order"
+		table : "sp_statics"
 	});
 	return callback();
 }
