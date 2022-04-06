@@ -371,14 +371,14 @@
     "data": [
         {
             "id": 101,
-            "authName": "商品管理",
+            "authName": "芯片管理",
             "level": "0",
             "pid": 0,
             "path": null
         },
         {
             "id": 102,
-            "authName": "订单管理",
+            "authName": "检测数据管理",
             "level": "0",
             "pid": 0,
             "path": null
@@ -398,19 +398,19 @@ type=tree
     data: [
       {
         id: 101,
-        authName: '商品管理',
+        authName: '芯片管理',
         path: null,
         pid: 0,
         children: [
           {
             id: 104,
-            authName: '商品列表',
+            authName: '芯片列表',
             path: null,
             pid: 101,
             children: [
               {
                 id: 105,
-                authName: '添加商品',
+                authName: '添加芯片',
                 path: null,
                 pid: '104,101'
               }
@@ -437,12 +437,12 @@ type=tree
     "data":
         {
             "id": 101,
-            "authName": "商品管理",
+            "authName": "芯片管理",
             "path": null,
             "children": [
                 {
                     "id": 104,
-                    "authName": "商品列表",
+                    "authName": "芯片列表",
                     "path": null,
                     "children": []
                 }
@@ -482,17 +482,17 @@ type=tree
             "children": [
                 {
                     "id": 101,
-                    "authName": "商品管理",
+                    "authName": "芯片管理",
                     "path": null,
                     "children": [
                         {
                             "id": 104,
-                            "authName": "商品列表",
+                            "authName": "芯片列表",
                             "path": null,
                             "children": [
                                 {
                                     "id": 105,
-                                    "authName": "添加商品",
+                                    "authName": "添加芯片",
                                     "path": null
                                 }
                             ]
@@ -675,17 +675,17 @@ type=tree
       "data": [
           {
               "id": 101,
-              "authName": "商品管理",
+              "authName": "芯片管理",
               "path": null,
               "children": [
                   {
                       "id": 104,
-                      "authName": "商品列表",
+                      "authName": "芯片列表",
                       "path": null,
                       "children": [
                           {
                               "id": 105,
-                              "authName": "添加商品",
+                              "authName": "添加芯片",
                               "path": null
                           },
                           {
@@ -705,9 +705,9 @@ type=tree
   }
   ```
 
-## 1.6. 商品分类管理
+## 1.6. 芯片分类管理
 
-### 1.6.1. 商品分类数据列表
+### 1.6.1. 芯片分类数据列表
 
 - 请求路径：categories
 - 请求方法：get
@@ -1044,9 +1044,9 @@ type=tree
 }
 ```
 
-## 1.8. 商品管理
+## 1.8. 芯片管理
 
-### 1.8.1. 商品列表数据
+### 1.8.1. 芯片列表数据
 
 - 请求路径：goods
 - 请求方法：get
@@ -1062,14 +1062,14 @@ type=tree
 
 | 参数名       | 参数说明     | 备注                                   |
 | ------------ | ------------ | -------------------------------------- |
-| total        | 总共商品条数 |                                        |
-| pagenum      | 当前商品页数 |                                        |
-| chip_id     | 商品 ID      |                                        |
-| chip_name   | 商品名称     |                                        |
+| total        | 总共芯片条数 |                                        |
+| pagenum      | 当前芯片页数 |                                        |
+| chip_id     | 芯片 ID      |                                        |
+| chip_name   | 芯片名称     |                                        |
 | chip_price  | 价格         |                                        |
 | chip_number | 数量         |                                        |
 | chip_desc | 重量         | 不能为空                               |
-| goods_state  | 商品状态     | 商品状态 0: 未通过 1: 审核中 2: 已审核 |
+| goods_state  | 芯片状态     | 芯片状态 0: 未通过 1: 审核中 2: 已审核 |
 | add_time     | 添加时间     |                                        |
 | upd_time     | 更新时间     |                                        |
 | color_mumber   | 热销品数量   |                                        |
@@ -1104,7 +1104,7 @@ type=tree
 }
 ```
 
-### 1.8.2. 添加商品
+### 1.8.2. 添加芯片
 
 - 请求路径：goods
 - 请求方法：post
@@ -1112,14 +1112,14 @@ type=tree
 
 | 参数名          | 参数说明                                          | 备注     |
 | --------------- | ------------------------------------------------- | -------- |
-| chip_name      | 商品名称                                          | 不能为空 |
+| chip_name      | 芯片名称                                          | 不能为空 |
 | goods_cat       | 以为','分割的分类列表                             | 不能为空 |
 | chip_price     | 价格                                              | 不能为空 |
 | chip_number    | 数量                                              | 不能为空 |
 | chip_desc    | 重量                                              | 不能为空 |
 | goods_introduce | 介绍                                              | 可以为空 |
 | pics            | 上传的图片临时路径（对象）                        | 可以为空 |
-| attrs           | 商品的参数（数组），包含 `动态参数` 和 `静态属性` | 可以为空 |
+| attrs           | 芯片的参数（数组），包含 `动态参数` 和 `静态属性` | 可以为空 |
 
 - 请求数据
 
@@ -1151,21 +1151,21 @@ type=tree
 
 | 参数名       | 参数说明                   | 备注                                                         |
 | ------------ | -------------------------- | ------------------------------------------------------------ |
-| total        | 总共商品条数               |                                                              |
-| pagenum      | 当前商品页数               |                                                              |
-| chip_id     | 商品 ID                    |                                                              |
+| total        | 总共芯片条数               |                                                              |
+| pagenum      | 当前芯片页数               |                                                              |
+| chip_id     | 芯片 ID                    |                                                              |
 | goods_cat    | 以为','分割的分类列表      |                                                              |
-| chip_name   | 商品名称                   |                                                              |
+| chip_name   | 芯片名称                   |                                                              |
 | chip_price  | 价格                       |                                                              |
 | chip_number | 数量                       |                                                              |
 | chip_desc | 重量                       | 不能为空                                                     |
-| goods_state  | 商品状态                   | 商品状态 0: 未通过 1: 审核中 2: 已审核                       |
+| goods_state  | 芯片状态                   | 芯片状态 0: 未通过 1: 审核中 2: 已审核                       |
 | add_time     | 添加时间                   |                                                              |
 | upd_time     | 更新时间                   |                                                              |
 | color_mumber   | 热销品数量                 |                                                              |
 | is_promote   | 是否是热销品               |                                                              |
-| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:商品 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
-| attrs        | 商品的参数（数组）         | chip_id:商品 ID,attr_value:当前商品的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
+| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:芯片 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
+| attrs        | 芯片的参数（数组）         | chip_id:芯片 ID,attr_value:当前芯片的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
 
 - 响应数据
 
@@ -1219,13 +1219,13 @@ type=tree
         ]
     },
     "meta": {
-        "msg": "创建商品成功",
+        "msg": "创建芯片成功",
         "status": 201
     }
 }
 ```
 
-### 1.8.3. 根据 ID 查询商品
+### 1.8.3. 根据 ID 查询芯片
 
 - 请求路径：goods/:id
 - 请求方法：get
@@ -1233,26 +1233,26 @@ type=tree
 
 | 参数名 | 参数说明 | 备注                  |
 | ------ | -------- | --------------------- |
-| id     | 商品 ID  | 不能为空`携带在url中` |
+| id     | 芯片 ID  | 不能为空`携带在url中` |
 
 - 响应参数
 
 | 参数名       | 参数说明                   | 备注                                                         |
 | ------------ | -------------------------- | ------------------------------------------------------------ |
-| total        | 总共商品条数               |                                                              |
-| pagenum      | 当前商品页数               |                                                              |
-| chip_id     | 商品 ID                    |                                                              |
-| chip_name   | 商品名称                   |                                                              |
+| total        | 总共芯片条数               |                                                              |
+| pagenum      | 当前芯片页数               |                                                              |
+| chip_id     | 芯片 ID                    |                                                              |
+| chip_name   | 芯片名称                   |                                                              |
 | chip_price  | 价格                       |                                                              |
 | chip_number | 数量                       |                                                              |
 | chip_desc | 重量                       | 不能为空                                                     |
-| goods_state  | 商品状态                   | 商品状态 0: 未通过 1: 审核中 2: 已审核                       |
+| goods_state  | 芯片状态                   | 芯片状态 0: 未通过 1: 审核中 2: 已审核                       |
 | add_time     | 添加时间                   |                                                              |
 | upd_time     | 更新时间                   |                                                              |
 | color_mumber   | 热销品数量                 |                                                              |
 | is_promote   | 是否是热销品               |                                                              |
-| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:商品 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
-| attrs        | 商品的参数（数组）         | chip_id:商品 ID,attr_value:当前商品的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
+| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:芯片 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
+| attrs        | 芯片的参数（数组）         | chip_id:芯片 ID,attr_value:当前芯片的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
 
 - 响应数据
 
@@ -1305,13 +1305,13 @@ type=tree
         ]
     },
     "meta": {
-        "msg": "创建商品成功",
+        "msg": "创建芯片成功",
         "status": 201
     }
 }
 ```
 
-### 1.8.4. 编辑提交商品
+### 1.8.4. 编辑提交芯片
 
 - 请求路径：goods/:id
 - 请求方法：put
@@ -1319,14 +1319,14 @@ type=tree
 
 | 参数名          | 参数说明                   | 备注                  |
 | --------------- | -------------------------- | --------------------- |
-| id              | 商品 ID                    | 不能为空`携带在url中` |
-| chip_name      | 商品名称                   | 不能为空              |
+| id              | 芯片 ID                    | 不能为空`携带在url中` |
+| chip_name      | 芯片名称                   | 不能为空              |
 | chip_price     | 价格                       | 不能为空              |
 | chip_number    | 数量                       | 不能为空              |
 | chip_desc    | 重量                       | 不能为空              |
 | goods_introduce | 介绍                       | 可以为空              |
 | pics            | 上传的图片临时路径（对象） | 可以为空              |
-| attrs           | 商品的参数（数组）         | 可以为空              |
+| attrs           | 芯片的参数（数组）         | 可以为空              |
 
 - 请求数据
 
@@ -1357,20 +1357,20 @@ type=tree
 
 | 参数名       | 参数说明                   | 备注                                                         |
 | ------------ | -------------------------- | ------------------------------------------------------------ |
-| total        | 总共商品条数               |                                                              |
-| pagenum      | 当前商品页数               |                                                              |
-| chip_id     | 商品 ID                    |                                                              |
-| chip_name   | 商品名称                   |                                                              |
+| total        | 总共芯片条数               |                                                              |
+| pagenum      | 当前芯片页数               |                                                              |
+| chip_id     | 芯片 ID                    |                                                              |
+| chip_name   | 芯片名称                   |                                                              |
 | chip_price  | 价格                       |                                                              |
 | chip_number | 数量                       |                                                              |
 | chip_desc | 重量                       | 不能为空                                                     |
-| goods_state  | 商品状态                   | 商品状态 0: 未通过 1: 审核中 2: 已审核                       |
+| goods_state  | 芯片状态                   | 芯片状态 0: 未通过 1: 审核中 2: 已审核                       |
 | add_time     | 添加时间                   |                                                              |
 | upd_time     | 更新时间                   |                                                              |
 | color_mumber   | 热销品数量                 |                                                              |
 | is_promote   | 是否是热销品               |                                                              |
-| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:商品 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
-| attrs        | 商品的参数（数组）         | chip_id:商品 ID,attr_value:当前商品的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
+| pics         | 上传的图片临时路径（对象） | pics_id:图片 ID,chip_id:芯片 ID,pics_big:大图,pics_mid:中图,pics_sma:小图 |
+| attrs        | 芯片的参数（数组）         | chip_id:芯片 ID,attr_value:当前芯片的参数值,add_price:浮动价格,attr_vals:预定义的参数值,attr_sel:手动输入，还是单选, |
 
 - 响应数据
 
@@ -1423,13 +1423,13 @@ type=tree
         ]
     },
     "meta": {
-        "msg": "创建商品成功",
+        "msg": "创建芯片成功",
         "status": 201
     }
 }
 ```
 
-### 1.8.5. 删除商品
+### 1.8.5. 删除芯片
 
 - 请求路径：goods/:id
 - 请求方法：delete
@@ -1437,7 +1437,7 @@ type=tree
 
 | 参数名 | 参数说明 | 备注                  |
 | ------ | -------- | --------------------- |
-| id     | 商品 ID  | 不能为空`携带在url中` |
+| id     | 芯片 ID  | 不能为空`携带在url中` |
 
 - 响应数据
 
@@ -1451,7 +1451,7 @@ type=tree
 }
 ```
 
-\###同步商品图片
+\###同步芯片图片
 
 - 请求路径：goods/:id/pics
 - 请求方法：put
@@ -1459,8 +1459,8 @@ type=tree
 
 | 参数名 | 参数说明     | 备注                                                         |
 | ------ | ------------ | ------------------------------------------------------------ |
-| id     | 商品 ID      | 不能为空`携带在url中`                                        |
-| pics   | 商品图片集合 | 如果有 pics_id 字段会保留该图片，如果没有 pics_id 但是有 pic 字段就会新生成图片数据 |
+| id     | 芯片 ID      | 不能为空`携带在url中`                                        |
+| pics   | 芯片图片集合 | 如果有 pics_id 字段会保留该图片，如果没有 pics_id 但是有 pic 字段就会新生成图片数据 |
 
 - 请求数据
 
@@ -1536,7 +1536,7 @@ type=tree
 }
 ```
 
-\###同步商品属性
+\###同步芯片属性
 
 - 请求路径：goods/:id/attributes
 - 请求方法：put
@@ -1544,7 +1544,7 @@ type=tree
 
 | 参数名 | 参数说明 | 备注                  |
 | ------ | -------- | --------------------- |
-| id     | 商品 ID  | 不能为空`携带在url中` |
+| id     | 芯片 ID  | 不能为空`携带在url中` |
 
 - 请求数据
 
@@ -1620,7 +1620,7 @@ type=tree
 }
 ```
 
-\###商品图片处理必须安装 GraphicsMagick
+\###芯片图片处理必须安装 GraphicsMagick
 
 - linux
 
@@ -1661,9 +1661,9 @@ brew install GraphicsMagick
 }
 ```
 
-## 1.10. 订单管理
+## 1.10. 检测数据管理
 
-### 1.10.1. 订单数据列表
+### 1.10.1. 检测数据数据列表
 
 - 请求路径：orders
 - 请求方法：get
@@ -1715,7 +1715,7 @@ brew install GraphicsMagick
 }
 ```
 
-### 1.10.2. 修改订单状态
+### 1.10.2. 修改检测数据状态
 
 - 请求路径：orders/:id
 - 请求方法：put
@@ -1723,12 +1723,12 @@ brew install GraphicsMagick
 
 | 参数名       | 参数说明     | 备注                                       |
 | ------------ | ------------ | ------------------------------------------ |
-| id           | 订单 ID      | 不能为空`携带在url中`                      |
-| is_send      | 订单是否发货 | 1:已经发货，0:未发货                       |
-| static_chip    | 订单支付     | 支付方式 0 未支付 1 支付宝 2 微信 3 银行卡 |
-| static_price  | 订单价格     |                                            |
-| static_number | 订单数量     |                                            |
-| pay_status   | 支付状态     | 订单状态： 0 未付款、1 已付款              |
+| id           | 检测数据 ID      | 不能为空`携带在url中`                      |
+| is_send      | 检测数据是否发货 | 1:已经发货，0:未发货                       |
+| static_chip    | 检测数据支付     | 支付方式 0 未支付 1 支付宝 2 微信 3 银行卡 |
+| static_price  | 检测数据价格     |                                            |
+| static_number | 检测数据数量     |                                            |
+| pay_status   | 支付状态     | 检测数据状态： 0 未付款、1 已付款              |
 
 - 请求数据说明
   - 所有请求数据都是增量更新，如果参数不填写，就不会更新该字段
@@ -1777,7 +1777,7 @@ brew install GraphicsMagick
 }
 ```
 
-### 1.10.3. 查看订单详情
+### 1.10.3. 查看检测数据详情
 
 - 请求路径：orders/:id
 - 请求方法：get
@@ -1785,7 +1785,7 @@ brew install GraphicsMagick
 
 | 参数名 | 参数说明 | 备注                  |
 | ------ | -------- | --------------------- |
-| id     | 订单 ID  | 不能为空`携带在url中` |
+| id     | 检测数据 ID  | 不能为空`携带在url中` |
 
 - 响应数据
 
@@ -1902,13 +1902,13 @@ brew install GraphicsMagick
       {
         "time": "2018-05-09 12:22:24",
         "ftime": "2018-05-09 12:22:24",
-        "context": "您的订单将由HLA（北京海淀区清河中街店）门店安排发货。",
+        "context": "您的检测数据将由HLA（北京海淀区清河中街店）门店安排发货。",
         "location": ""
       },
       {
         "time": "2018-05-08 21:36:04",
         "ftime": "2018-05-08 21:36:04",
-        "context": "商品已经下单",
+        "context": "芯片已经下单",
         "location": ""
       }
     ],

@@ -8,7 +8,7 @@ var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 // 通过验证模块获取分类管理
 var orderServ = authorization.getService('OrderService')
 
-// 订单列表
+// 检测数据列表
 router.get(
   '/',
   // 参数验证
@@ -30,7 +30,7 @@ router.get(
       conditions['create_time'] = req.query.create_time
     }
 
-     if (req.query.static_number) {
+    if (req.query.static_number) {
       conditions['static_number'] = req.query.static_number
     }
 
@@ -67,7 +67,7 @@ router.get(
   }
 )
 
-// 添加订单
+// 添加检测数据
 router.post(
   '/',
   // 参数验证
@@ -79,12 +79,12 @@ router.post(
     var params = req.body
     orderServ.createOrder(params, function (err, newOrder) {
       if (err) return res.sendResult(null, 400, err)
-      return res.sendResult(newOrder, 201, '创建订单成功')
+      return res.sendResult(newOrder, 201, '创建检测数据成功')
     })(req, res, next)
   }
 )
 
-// 更新订单发送状态
+// 更新检测数据发送状态
 router.put(
   '/:id',
   // 参数验证
@@ -96,7 +96,7 @@ router.put(
     var params = req.body
     orderServ.updateOrder(req.params.id, params, function (err, newOrder) {
       if (err) return res.sendResult(null, 400, err)
-      return res.sendResult(newOrder, 201, '更新订单成功')
+      return res.sendResult(newOrder, 201, '更新检测数据成功')
     })(req, res, next)
   }
 )
@@ -126,24 +126,24 @@ router.post(
   }
 )
 
-router.delete("/:id",
-	// 参数验证
-	function(req,res,next) {
-		if(!req.params.id) {
-			return res.sendResult(null,400,"检测ID不能为空");
-		}
-		if(isNaN(parseInt(req.params.id))) return res.sendResult(null,400,"检测ID必须是数字");
-		next();
-	},
-	// 业务逻辑
-	function(req,res,next) {
-		orderServ.deleteStatic(req.params.id,function(err){
-			if(err)
-				return res.sendResult(null,400,"删除失败");
-			else
-				return res.sendResult(null,200,"删除成功");
-		})(req,res,next);
-	}
-);
+router.delete(
+  '/:id',
+  // 参数验证
+  function (req, res, next) {
+    if (!req.params.id) {
+      return res.sendResult(null, 400, '检测ID不能为空')
+    }
+    if (isNaN(parseInt(req.params.id)))
+      return res.sendResult(null, 400, '检测ID必须是数字')
+    next()
+  },
+  // 业务逻辑
+  function (req, res, next) {
+    orderServ.deleteStatic(req.params.id, function (err) {
+      if (err) return res.sendResult(null, 400, '删除失败')
+      else return res.sendResult(null, 200, '删除成功')
+    })(req, res, next)
+  }
+)
 
 module.exports = router

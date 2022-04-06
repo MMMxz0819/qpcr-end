@@ -80,20 +80,20 @@ function generateGoodInfo(params) {
   return new Promise(function (resolve, reject) {
     var info = {}
     if (params.chip_id) info['chip_id'] = params.chip_id
-    if (!params.chip_name) return reject('商品名称不能为空')
+    if (!params.chip_name) return reject('芯片名称不能为空')
     info['chip_name'] = params.chip_name
 
-    if (!params.chip_price) return reject('商品价格不能为空')
+    if (!params.chip_price) return reject('芯片价格不能为空')
     var price = parseFloat(params.chip_price)
-    if (isNaN(price) || price < 0) return reject('商品价格不正确')
+    if (isNaN(price) || price < 0) return reject('芯片价格不正确')
     info['chip_price'] = price
 
-    if (!params.chip_number) return reject('商品数量不能为空')
+    if (!params.chip_number) return reject('芯片数量不能为空')
     var num = parseInt(params.chip_number)
-    if (isNaN(num) || num < 0) return reject('商品数量不正确')
+    if (isNaN(num) || num < 0) return reject('芯片数量不正确')
     info['chip_number'] = num
 
-    if (!params.goods_cat) return reject('商品没有设置所属分类')
+    if (!params.goods_cat) return reject('芯片没有设置所属分类')
     var cats = params.goods_cat.split(',')
     if (cats.length > 0) {
       info['cat_one_id'] = cats[0]
@@ -108,7 +108,7 @@ function generateGoodInfo(params) {
 
     if (params.chip_desc) {
       // weight = parseFloat(params.chip_desc);
-      // if(isNaN(weight) || weight < 0) return reject("商品重量格式不正确");
+      // if(isNaN(weight) || weight < 0) return reject("芯片重量格式不正确");
       info['chip_desc'] = params.chip_desc
     } else {
       info['chip_desc'] = ''
@@ -160,7 +160,7 @@ function generateGoodInfo(params) {
 }
 
 /**
- * 检查商品名称是否重复
+ * 检查芯片名称是否重复
  *
  * @param  {[type]} info [description]
  * @return {[type]}      [description]
@@ -174,14 +174,14 @@ function checkGoodName(info) {
         if (err) return reject(err)
         if (!good) return resolve(info)
         if (good.chip_id == info.chip_id) return resolve(info)
-        return reject('商品名称已存在')
+        return reject('芯片名称已存在')
       }
     )
   })
 }
 
 /**
- * 创建商品基本信息
+ * 创建芯片基本信息
  *
  * @param  {[type]} info [description]
  * @return {[type]}      [description]
@@ -191,7 +191,7 @@ function createGoodInfo(info) {
     dao.create('GoodModel', _.clone(info), function (err, newGood) {
       if (err) {
         console.log(err)
-        return reject('创建商品基本信息失败')
+        return reject('创建芯片基本信息失败')
       }
       newGood.goods_cat = newGood.getGoodsCat()
       info.good = newGood
@@ -202,13 +202,13 @@ function createGoodInfo(info) {
 
 function updateGoodInfo(info) {
   return new Promise(function (resolve, reject) {
-    if (!info.chip_id) return reject('商品ID不存在')
+    if (!info.chip_id) return reject('芯片ID不存在')
     dao.update(
       'GoodModel',
       info.chip_id,
       _.clone(info),
       function (err, newGood) {
-        if (err) return reject('更新商品基本信息失败')
+        if (err) return reject('更新芯片基本信息失败')
         info.good = newGood
 
         return resolve(info)
@@ -218,7 +218,7 @@ function updateGoodInfo(info) {
 }
 
 /**
- * 获取商品对象
+ * 获取芯片对象
  *
  * @param  {[type]} info 查询内容
  * @return {[type]}      [description]
@@ -226,10 +226,10 @@ function updateGoodInfo(info) {
 function getGoodInfo(info) {
   return new Promise(function (resolve, reject) {
     if (!info || !info.chip_id || isNaN(info.chip_id))
-      return reject('商品ID格式不正确')
+      return reject('芯片ID格式不正确')
 
     dao.show('GoodModel', info.chip_id, function (err, good) {
-      if (err) return reject('获取商品基本信息失败')
+      if (err) return reject('获取芯片基本信息失败')
       good.goods_cat = good.getGoodsCat()
       info['good'] = good
       return resolve(info)
@@ -238,14 +238,14 @@ function getGoodInfo(info) {
 }
 
 /**
- * 删除商品图片
+ * 删除芯片图片
  *
  * @param  {[type]} pic 图片对象
  * @return {[type]}     [description]
  */
 function removeGoodPic(pic) {
   return new Promise(function (resolve, reject) {
-    if (!pic || !pic.remove) return reject('删除商品图片记录失败')
+    if (!pic || !pic.remove) return reject('删除芯片图片记录失败')
     pic.remove(function (err) {
       if (err) return reject('删除失败')
       resolve()
@@ -273,23 +273,23 @@ function createGoodPic(pic) {
 }
 
 /**
- * 更新商品图片
+ * 更新芯片图片
  *
  * @param  {[type]} info    参数
- * @param  {[type]} newGood 商品基本信息
+ * @param  {[type]} newGood 芯片基本信息
  */
 function doUpdateGoodPics(info) {
   // console.log('--------------------',info.good)
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.chip_id) return reject('更新商品图片失败')
+    if (!good.chip_id) return reject('更新芯片图片失败')
 
     if (!info.pics) return resolve(info)
     dao.list(
       'GoodPicModel',
       { columns: { chip_id: good.chip_id } },
       function (err, oldpics) {
-        if (err) return reject('获取商品图片列表失败')
+        if (err) return reject('获取芯片图片列表失败')
 
         var batchFns = []
 
@@ -324,8 +324,8 @@ function doUpdateGoodPics(info) {
           }
         })
 
-        // 开始处理商品图片数据逻辑
-        // 1. 删除商品图片数据集合
+        // 开始处理芯片图片数据逻辑
+        // 1. 删除芯片图片数据集合
         _(delOldpics).forEach(function (pic) {
           // 1.1 删除图片物理路径
           batchFns.push(
@@ -390,7 +390,7 @@ function createGoodAttribute(goodAttribute) {
       'GoodAttributeModel',
       _.omit(goodAttribute, 'delete_time'),
       function (err, newAttr) {
-        if (err) return reject('创建商品参数失败')
+        if (err) return reject('创建芯片参数失败')
         resolve(newAttr)
       }
     )
@@ -398,19 +398,19 @@ function createGoodAttribute(goodAttribute) {
 }
 
 /**
- * 更新商品属性
+ * 更新芯片属性
  *
  * @param  {[type]} info 参数
- * @param  {[type]} good 商品对象
+ * @param  {[type]} good 芯片对象
  */
 function doUpdateGoodAttributes(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
+    if (!good.chip_id) return reject('获取芯片图片必须先获取芯片信息')
     if (!info.attrs) return resolve(info)
     // var GoodAttributeModel = dao.getModel("GoodAttributeModel");
     goodAttributeDao.clearGoodAttributes(good.chip_id, function (err) {
-      if (err) return reject('清理原始的商品参数失败')
+      if (err) return reject('清理原始的芯片参数失败')
 
       var newAttrs = info.attrs ? info.attrs : []
 
@@ -451,13 +451,13 @@ function doUpdateGoodAttributes(info) {
 function doGetAllPics(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
+    if (!good.chip_id) return reject('获取芯片图片必须先获取芯片信息')
     // 3. 组装最新的数据挂载在“info”中“good”对象下
     dao.list(
       'GoodPicModel',
       { columns: { chip_id: good.chip_id } },
       function (err, goodPics) {
-        if (err) return reject('获取所有商品图片列表失败')
+        if (err) return reject('获取所有芯片图片列表失败')
         _(goodPics).forEach(function (pic) {
           if (pic.pics_big.indexOf('http') == 0) {
             pic.pics_big_url = pic.pics_big
@@ -494,9 +494,9 @@ function doGetAllPics(info) {
 function doGetAllAttrs(info) {
   return new Promise(function (resolve, reject) {
     var good = info.good
-    if (!good.chip_id) return reject('获取商品图片必须先获取商品信息')
+    if (!good.chip_id) return reject('获取芯片图片必须先获取芯片信息')
     goodAttributeDao.list(good.chip_id, function (err, goodAttrs) {
-      if (err) return reject('获取所有商品参数列表失败')
+      if (err) return reject('获取所有芯片参数列表失败')
       info.good.attrs = goodAttrs
       resolve(info)
     })
@@ -504,21 +504,21 @@ function doGetAllAttrs(info) {
 }
 
 /**
- * 创建商品
+ * 创建芯片
  *
- * @param  {[type]}   params 商品参数
+ * @param  {[type]}   params 芯片参数
  * @param  {Function} cb     回调函数
  */
 module.exports.createGood = function (params, cb) {
   // 验证参数 & 生成数据
   generateGoodInfo(params)
-    // 检查商品名称
+    // 检查芯片名称
     .then(checkGoodName)
-    // 创建商品
+    // 创建芯片
     .then(createGoodInfo)
-    // 更新商品图片
+    // 更新芯片图片
     .then(doUpdateGoodPics)
-    // 更新商品参数
+    // 更新芯片参数
     // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
@@ -533,9 +533,9 @@ module.exports.createGood = function (params, cb) {
 }
 
 /**
- * 删除商品
+ * 删除芯片
  *
- * @param  {[type]}   id 商品ID
+ * @param  {[type]}   id 芯片ID
  * @param  {Function} cb 回调函数
  */
 module.exports.deleteGood = function (id, cb) {
@@ -557,7 +557,7 @@ module.exports.deleteGood = function (id, cb) {
 }
 
 /**
- * 获取商品列表
+ * 获取芯片列表
  *
  * @param  {[type]}   params     查询条件
  * @param  {Function} cb         回调函数
@@ -626,9 +626,9 @@ module.exports.getAllGoods = function (params, cb) {
 }
 
 /**
- * 更新商品
+ * 更新芯片
  *
- * @param  {[type]}   id     商品ID
+ * @param  {[type]}   id     芯片ID
  * @param  {[type]}   params 参数
  * @param  {Function} cb     回调函数
  */
@@ -636,13 +636,13 @@ module.exports.updateGood = function (id, params, cb) {
   params.chip_id = id
   // 验证参数 & 生成数据
   generateGoodInfo(params)
-    // 检查商品名称
+    // 检查芯片名称
     .then(checkGoodName)
-    // 创建商品
+    // 创建芯片
     .then(updateGoodInfo)
-    // 更新商品图片
+    // 更新芯片图片
     .then(doUpdateGoodPics)
-    // 更新商品参数
+    // 更新芯片参数
     // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
     .then(doGetAllAttrs)
@@ -656,15 +656,15 @@ module.exports.updateGood = function (id, params, cb) {
 }
 
 /**
- * 更新商品图片
+ * 更新芯片图片
  *
- * @param  {[type]}   chip_id 商品ID
- * @param  {[type]}   pics     商品图片
+ * @param  {[type]}   chip_id 芯片ID
+ * @param  {[type]}   pics     芯片图片
  * @param  {Function} cb       回调函数
  */
 module.exports.updateGoodPics = function (chip_id, pics, cb) {
-  if (!chip_id) return cb('商品ID不能为空')
-  if (isNaN(chip_id)) return cb('商品ID必须为数字')
+  if (!chip_id) return cb('芯片ID不能为空')
+  if (isNaN(chip_id)) return cb('芯片ID必须为数字')
 
   getGoodInfo({ chip_id: chip_id, pics: pics })
     .then(doUpdateGoodPics)
@@ -705,9 +705,9 @@ module.exports.updateGoodsState = function (chip_id, state, cb) {
 }
 
 /**
- * 通过商品ID获取商品数据
+ * 通过芯片ID获取芯片数据
  *
- * @param  {[type]}   id 商品ID
+ * @param  {[type]}   id 芯片ID
  * @param  {Function} cb 回调函数
  */
 module.exports.getGoodById = function (id, cb) {

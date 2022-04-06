@@ -56,9 +56,9 @@ function doCheckOrderParams(params) {
 
     if (!params.static_id) info.static_number = 'itcast-' + uniqid()
 
-    if (!params.static_price) return reject('订单价格不能为空')
+    if (!params.static_price) return reject('检测数据价格不能为空')
     if (isNaN(parseFloat(params.static_price)))
-      return reject('订单价格必须为数字')
+      return reject('检测数据价格必须为数字')
     info.static_price = params.static_price
 
     if (params.static_chip) {
@@ -108,7 +108,7 @@ function doCheckOrderParams(params) {
 function doCreateOrder(info) {
   return new Promise(function (resolve, reject) {
     dao.create('OrderModel', _.clone(info), function (err, newOrder) {
-      if (err) return reject('创建订单失败')
+      if (err) return reject('创建检测数据失败')
       info.order = newOrder
       resolve(info)
     })
@@ -118,7 +118,7 @@ function doCreateOrder(info) {
 function doCreateOrderGood(orderGood) {
   return new Promise(function (resolve, reject) {
     dao.create('OrderGoodModel', orderGood, function (err, newOrderGood) {
-      if (err) return reject('创建订单商品失败')
+      if (err) return reject('创建检测数据芯片失败')
       resolve(newOrderGood)
     })
   })
@@ -126,7 +126,7 @@ function doCreateOrderGood(orderGood) {
 
 function doAddOrderGoods(info) {
   return new Promise(function (resolve, reject) {
-    if (!info.order) return reject('订单对象未创建')
+    if (!info.order) return reject('检测数据对象未创建')
 
     var orderGoods = info.goods
 
@@ -155,7 +155,7 @@ function doAddOrderGoods(info) {
 
 function doGetAllOrderGoods(info) {
   return new Promise(function (resolve, reject) {
-    if (!info.order) return reject('订单对象未创建')
+    if (!info.order) return reject('检测数据对象未创建')
 
     dao.list(
       'OrderGoodModel',
@@ -163,7 +163,7 @@ function doGetAllOrderGoods(info) {
       function (err, orderGoods) {
         if (err) {
           console.log(err)
-          return reject('获取订单商品列表失败')
+          return reject('获取检测数据芯片列表失败')
         }
 
         info.order.goods = orderGoods
@@ -176,8 +176,8 @@ function doGetAllOrderGoods(info) {
 function doGetOrder(info) {
   return new Promise(function (resolve, reject) {
     dao.show('OrderModel', info.static_id, function (err, newOrder) {
-      if (err) return reject('获取订单详情失败')
-      if (!newOrder) return reject('订单ID不能存在')
+      if (err) return reject('获取检测数据详情失败')
+      if (!newOrder) return reject('检测数据ID不能存在')
       info.order = newOrder
       resolve(info)
     })
