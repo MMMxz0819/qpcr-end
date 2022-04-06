@@ -126,8 +126,8 @@ module.exports.findOne = function (modelName, conditions, cb) {
   if (!conditions) return cb('条件为空', null)
 
   Model.one(conditions, function (err, obj) {
-    logger.debug(err)
     if (err) {
+      logger.debug(err)
       return cb('查询失败', null)
     }
     return cb(null, obj)

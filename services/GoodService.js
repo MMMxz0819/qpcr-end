@@ -7,8 +7,7 @@ var Promise = require('bluebird')
 var fs = require('fs')
 const http = require('http')
 
-var gm = require('gm')
-var uniqid = require('uniqid')
+var logger = require('../modules/logger').logger()
 var upload_config = require('config').get('upload_config')
 /**
  * 裁剪图片
@@ -149,9 +148,7 @@ function generateGoodInfo(params) {
     info['is_del'] = '0'
 
     if (params.color_mumber) {
- 
       info['color_mumber'] = params.color_mumber
-
     }
 
     info['is_promote'] = info['is_promote'] ? info['is_promote'] : false
@@ -192,20 +189,18 @@ function checkGoodName(info) {
 function createGoodInfo(info) {
   return new Promise(function (resolve, reject) {
     dao.create('GoodModel', _.clone(info), function (err, newGood) {
-      if (err)  {
-        console.log(err);
-       return reject('创建商品基本信息失败')
+      if (err) {
+        console.log(err)
+        return reject('创建商品基本信息失败')
       }
       newGood.goods_cat = newGood.getGoodsCat()
       info.good = newGood
-      console.log('llll',info.good.chip_id);
       return resolve(info)
     })
   })
 }
 
 function updateGoodInfo(info) {
-  console.log('lllll',info.chip_id)
   return new Promise(function (resolve, reject) {
     if (!info.chip_id) return reject('商品ID不存在')
     dao.update(
@@ -215,7 +210,7 @@ function updateGoodInfo(info) {
       function (err, newGood) {
         if (err) return reject('更新商品基本信息失败')
         info.good = newGood
-        
+
         return resolve(info)
       }
     )
@@ -529,6 +524,7 @@ module.exports.createGood = function (params, cb) {
     .then(doGetAllAttrs)
     // 创建成功
     .then(function (info) {
+      logger.debug(`添加芯片:${info.good.chip_name}`)
       cb(null, info.good)
     })
     .catch(function (err) {
