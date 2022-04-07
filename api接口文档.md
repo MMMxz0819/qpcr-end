@@ -1113,7 +1113,7 @@ type=tree
 | 参数名          | 参数说明                                          | 备注     |
 | --------------- | ------------------------------------------------- | -------- |
 | chip_name      | 芯片名称                                          | 不能为空 |
-| goods_cat       | 以为','分割的分类列表                             | 不能为空 |
+| total_cat       | 以为','分割的分类列表                             | 不能为空 |
 | chip_price     | 价格                                              | 不能为空 |
 | chip_number    | 数量                                              | 不能为空 |
 | chip_desc    | 重量                                              | 不能为空 |
@@ -1126,7 +1126,7 @@ type=tree
 ```json
 {
   "chip_name":"test_goods_name2",
-  "goods_cat": "1,2,3",
+  "total_cat": "1,2,3",
   "chip_price":20,
   "chip_number":30,
   "chip_desc":40,
@@ -1154,7 +1154,7 @@ type=tree
 | total        | 总共芯片条数               |                                                              |
 | pagenum      | 当前芯片页数               |                                                              |
 | chip_id     | 芯片 ID                    |                                                              |
-| goods_cat    | 以为','分割的分类列表      |                                                              |
+| total_cat    | 以为','分割的分类列表      |                                                              |
 | chip_name   | 芯片名称                   |                                                              |
 | chip_price  | 价格                       |                                                              |
 | chip_number | 数量                       |                                                              |
@@ -1758,7 +1758,7 @@ brew install GraphicsMagick
                 "chip_id": 96,
                 "chip_price": 333,
                 "chip_number": 2,
-                "goods_total_price": 999
+                "chip_total_price": 999
             },
             {
                 "id": 83,
@@ -1766,7 +1766,7 @@ brew install GraphicsMagick
                 "chip_id": 95,
                 "chip_price": 666,
                 "chip_number": 5,
-                "goods_total_price": 999
+                "chip_total_price": 999
             }
         ]
     },
@@ -1813,7 +1813,7 @@ brew install GraphicsMagick
                 "chip_id": 96,
                 "chip_price": 333,
                 "chip_number": 2,
-                "goods_total_price": 999
+                "chip_total_price": 999
             },
             {
                 "id": 83,
@@ -1821,7 +1821,7 @@ brew install GraphicsMagick
                 "chip_id": 95,
                 "chip_price": 666,
                 "chip_number": 5,
-                "goods_total_price": 999
+                "chip_total_price": 999
             }
         ]
     },

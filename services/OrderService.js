@@ -43,7 +43,7 @@ function chartData(path) {
   }
 }
 
-function doCheckOrderParams(params) {
+function doCheckStaticParams(params) {
   return new Promise(function (resolve, reject) {
     var info = {}
     if (params.static_id) info.static_id = params.static_id
@@ -81,12 +81,6 @@ function doCheckOrderParams(params) {
       info.static_path = ''
     }
 
-    // if (params.order_fapiao_content) {
-    //   info.order_fapiao_content = params.order_fapiao_content
-    // } else {
-    //   info.order_fapiao_content = ''
-    // }
-
     if (params.consignee_addr) {
       info.consignee_addr = params.consignee_addr
     } else {
@@ -105,43 +99,43 @@ function doCheckOrderParams(params) {
   })
 }
 
-function doCreateOrder(info) {
+function doCreateStatic(info) {
   return new Promise(function (resolve, reject) {
-    dao.create('OrderModel', _.clone(info), function (err, newOrder) {
+    dao.create('StaticModel', _.clone(info), function (err, newStatic) {
       if (err) return reject('创建检测数据失败')
-      info.order = newOrder
+      info.static = newStatic
       resolve(info)
     })
   })
 }
 
-function doCreateOrderGood(orderGood) {
+function doCreateStaticGood(staticGood) {
   return new Promise(function (resolve, reject) {
-    dao.create('OrderGoodModel', orderGood, function (err, newOrderGood) {
+    dao.create('StaticChipModel', staticGood, function (err, newStaticGood) {
       if (err) return reject('创建检测数据芯片失败')
-      resolve(newOrderGood)
+      resolve(newStaticGood)
     })
   })
 }
 
-function doAddOrderGoods(info) {
+function doAddStaticrChips(info) {
   return new Promise(function (resolve, reject) {
-    if (!info.order) return reject('检测数据对象未创建')
+    if (!info.static) return reject('检测数据对象未创建')
 
-    var orderGoods = info.goods
+    var staticGoods = info.goods
 
-    if (orderGoods && orderGoods.length > 0) {
+    if (staticGoods && staticGoods.length > 0) {
       var fns = []
-      var goods_total_price = _.sum(_.map(orderGoods, 'chip_price'))
+      var chip_total_price = _.sum(_.map(staticGoods, 'chip_price'))
 
-      _(orderGoods).forEach(function (orderGood) {
-        orderGood.static_id = info.order.static_id
-        orderGood.goods_total_price = goods_total_price
-        fns.push(doCreateOrderGood(orderGood))
+      _(staticGoods).forEach(function (staticGood) {
+        staticGood.static_id = info.static.static_id
+        staticGood.chip_total_price = chip_total_price
+        fns.push(doCreateStaticGood(staticGood))
       })
       Promise.all(fns)
         .then(function (results) {
-          info.order.goods = results
+          info.static.goods = results
           resolve(info)
         })
         .catch(function (error) {
@@ -153,46 +147,46 @@ function doAddOrderGoods(info) {
   })
 }
 
-function doGetAllOrderGoods(info) {
+function doGetAllStaticChips(info) {
   return new Promise(function (resolve, reject) {
-    if (!info.order) return reject('检测数据对象未创建')
+    if (!info.static) return reject('检测数据对象未创建')
 
     dao.list(
-      'OrderGoodModel',
-      { columns: { static_id: info.order.static_id } },
-      function (err, orderGoods) {
+      'StaticChipModel',
+      { columns: { static_id: info.static.static_id } },
+      function (err, staticGoods) {
         if (err) {
           console.log(err)
           return reject('获取检测数据芯片列表失败')
         }
 
-        info.order.goods = orderGoods
+        info.static.goods = staticGoods
         resolve(info)
       }
     )
   })
 }
 
-function doGetOrder(info) {
+function doGetStatic(info) {
   return new Promise(function (resolve, reject) {
-    dao.show('OrderModel', info.static_id, function (err, newOrder) {
+    dao.show('StaticModel', info.static_id, function (err, newStatic) {
       if (err) return reject('获取检测数据详情失败')
-      if (!newOrder) return reject('检测数据ID不能存在')
-      info.order = newOrder
+      if (!newStatic) return reject('检测数据ID不能存在')
+      info.static = newStatic
       resolve(info)
     })
   })
 }
 
-function doUpdateOrder(info) {
+function doUpdateStatic(info) {
   return new Promise(function (resolve, reject) {
     dao.update(
-      'OrderModel',
+      'StaticModel',
       info.static_id,
       _.clone(info),
-      function (err, newOrder) {
+      function (err, newStatic) {
         if (err) return reject('更新失败')
-        info.order = newOrder
+        info.static = newStatic
         resolve(info)
       }
     )
@@ -209,7 +203,7 @@ module.exports.deleteStatic = function (id, cb) {
   if (!id) return cb('检测ID不能为空')
   if (isNaN(id)) return cb('检测ID必须为数字')
   dao.update(
-    'OrderModel',
+    'StaticModel',
     id,
     {
       is_del: '1',
@@ -224,19 +218,19 @@ module.exports.deleteStatic = function (id, cb) {
   console.log('111111111')
 }
 
-module.exports.createOrder = function (params, cb) {
-  doCheckOrderParams(params)
-    .then(doCreateOrder)
-    .then(doAddOrderGoods)
+module.exports.createStatic = function (params, cb) {
+  doCheckStaticParams(params)
+    .then(doCreateStatic)
+    .then(doAddStaticrChips)
     .then(function (info) {
-      cb(null, info.order)
+      cb(null, info.static)
     })
     .catch(function (err) {
       cb(err)
     })
 }
 
-module.exports.getAllOrders = function (params, cb) {
+module.exports.getAllStatics = function (params, cb) {
   if (!params.chart) {
     console.log(params)
     var conditions = {}
@@ -277,9 +271,9 @@ module.exports.getAllOrders = function (params, cb) {
       )
     }
 
-    // if (params.order_fapiao_content) {
-    //   conditions['columns']['order_fapiao_content'] = orm.like(
-    //     '%' + params.order_fapiao_content + '%'
+    // if (params.static_fapiao_content) {
+    //   conditions['columns']['static_fapiao_content'] = orm.like(
+    //     '%' + params.static_fapiao_content + '%'
     //   )
     // }
 
@@ -291,7 +285,7 @@ module.exports.getAllOrders = function (params, cb) {
 
     conditions['columns']['is_del'] = '0'
 
-    dao.countByConditions('OrderModel', conditions, function (err, count) {
+    dao.countByConditions('StaticModel', conditions, function (err, count) {
       if (err) return cb(err)
       pagesize = params.pagesize
       pagenum = params.pagenum
@@ -308,32 +302,24 @@ module.exports.getAllOrders = function (params, cb) {
       // conditions["only"] =
       conditions['order'] = '-create_time'
 
-      dao.list('OrderModel', conditions, function (err, orders) {
+      dao.list('StaticModel', conditions, function (err, statics) {
         if (err) return cb(err)
         var resultDta = {}
         resultDta['total'] = count
         resultDta['pagenum'] = pagenum
-        resultDta['goods'] = _.map(orders, function (order) {
+        resultDta['statics'] = _.map(statics, function (static) {
           return _.omit(
-            order,
+            static,
             // chartdata,
             'is_del',
 
             'delete_time'
-          ) //_.omit(order,);
+          ) //_.omit(static,);
         })
         cb(err, resultDta)
       })
     })
   } else {
-    console.log('ye')
-    // pagenum = params.pagenum
-    // pageCount = Math.ceil(count / pagesize)
-    // offset = (pagenum - 1) * pagesize
-    // if (offset >= count) {
-    //   offset = count
-    // }
-    // limit = pagesize
     AttributeDao.timeList(
       params.create_time[0],
       params.create_time[1],
@@ -349,30 +335,30 @@ module.exports.getAllOrders = function (params, cb) {
   }
 }
 
-module.exports.getOrder = function (orderId, cb) {
-  if (!orderId) return cb('用户ID不能为空')
-  if (isNaN(parseInt(orderId))) return cb('用户ID必须是数字')
+module.exports.getStatic = function (staticId, cb) {
+  if (!staticId) return cb('用户ID不能为空')
+  if (isNaN(parseInt(staticId))) return cb('用户ID必须是数字')
 
-  doGetOrder({ static_id: orderId })
-    .then(doGetAllOrderGoods)
+  doGetStatic({ static_id: staticId })
+    .then(doGetAllStaticChips)
     .then(function (info) {
-      const ddate = chartData(info.order.static_path)
-      cb(null, { ...info.order, ddate })
+      const ddate = chartData(info.static.static_path)
+      cb(null, { ...info.static, ddate })
     })
     .catch(function (err) {
       cb(err)
     })
 }
 
-module.exports.updateOrder = function (orderId, params, cb) {
-  if (!orderId) return cb('用户ID不能为空')
-  if (isNaN(parseInt(orderId))) return cb('用户ID必须是数字')
-  params['static_id'] = orderId
-  doCheckOrderParams(params)
-    .then(doUpdateOrder)
-    .then(doGetAllOrderGoods)
+module.exports.updateStatic = function (staticId, params, cb) {
+  if (!staticId) return cb('用户ID不能为空')
+  if (isNaN(parseInt(staticId))) return cb('用户ID必须是数字')
+  params['static_id'] = staticId
+  doCheckStaticParams(params)
+    .then(doUpdateStatic)
+    .then(doGetAllStaticChips)
     .then(function (info) {
-      cb(null, info.order)
+      cb(null, info.static)
     })
     .catch(function (err) {
       cb(err)

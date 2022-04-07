@@ -7,7 +7,7 @@ var logger = require('../../../../modules/logger.js').logger()
 var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 
 // 通过验证模块获取分类管理
-var goodServ = authorization.getService('GoodService')
+var chipServ = authorization.getService('GoodService')
 
 // 芯片列表
 router.get(
@@ -31,7 +31,7 @@ router.get(
     if (req.query.query) {
       conditions['query'] = req.query.query
     }
-    goodServ.getAllGoods(conditions, function (err, result) {
+    chipServ.getAllChips(conditions, function (err, result) {
       if (err) return res.sendResult(null, 400, err)
       res.sendResult(result, 200, '获取成功')
     })(req, res, next)
@@ -48,7 +48,7 @@ router.post(
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    goodServ.createGood(params, function (err, newGood) {
+    chipServ.createChip(params, function (err, newGood) {
       if (err) return res.sendResult(null, 400, err)
       res.sendResult(newGood, 201, '创建芯片成功')
     })(req, res, next)
@@ -70,7 +70,7 @@ router.put(
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    goodServ.updateGood(req.params.id, params, function (err, newGood) {
+    chipServ.updateChip(req.params.id, params, function (err, newGood) {
       if (err) return res.sendResult(null, 400, err)
       res.sendResult(newGood, 200, '创建芯片成功')
     })(req, res, next)
@@ -91,7 +91,7 @@ router.get(
   },
   // 业务逻辑
   function (req, res, next) {
-    goodServ.getGoodById(req.params.id, function (err, good) {
+    chipServ.getChipById(req.params.id, function (err, good) {
       if (err) return res.sendResult(null, 400, err)
       return res.sendResult(good, 200, '获取成功')
     })(req, res, next)
@@ -112,7 +112,7 @@ router.delete(
   },
   // 业务逻辑
   function (req, res, next) {
-    goodServ.deleteGood(req.params.id, function (err) {
+    chipServ.deleteChip(req.params.id, function (err) {
       if (err) {
         logger.debug(`删除芯片错误:${err}`)
         return res.sendResult(null, 400, '删除失败')
@@ -138,69 +138,10 @@ router.put(
   },
   // 业务逻辑
   function (req, res, next) {
-    goodServ.updateGoodPics(req.params.id, req.body, function (err, good) {
+    chipServ.updateChipPics(req.params.id, req.body, function (err, good) {
       if (err) return res.sendResult(null, 400, err)
       res.sendResult(good, 200, '更新成功')
     })(req, res, next)
-  }
-)
-
-// 更新芯片的属性
-router.put(
-  '/:id/attributes',
-  // 参数验证
-  function (req, res, next) {
-    if (!req.params.id) {
-      return res.sendResult(null, 400, '芯片ID不能为空')
-    }
-    if (isNaN(parseInt(req.params.id)))
-      return res.sendResult(null, 400, '芯片ID必须是数字')
-    next()
-  },
-  // 业务逻辑
-  function (req, res, next) {
-    goodServ.updateGoodAttributes(
-      req.params.id,
-      req.body,
-      function (err, good) {
-        if (err) return res.sendResult(null, 400, err)
-        res.sendResult(good, 200, '更新成功')
-      }
-    )(req, res, next)
-  }
-)
-
-// 更新芯片状态
-router.put(
-  '/:id/state/:state',
-  // 参数验证
-  function (req, res, next) {
-    if (!req.params.id) {
-      return res.sendResult(null, 400, '芯片ID不能为空')
-    }
-    if (isNaN(parseInt(req.params.id)))
-      return res.sendResult(null, 400, '芯片ID必须是数字')
-    if (!req.params.state) {
-      return res.sendResult(null, 400, '状态值不能为空')
-    }
-    if (
-      req.params.state != 0 &&
-      req.params.state != 1 &&
-      req.params.state != 2
-    ) {
-      return res.sendResult(null, 400, '状态值只能为 0 ，1 或 2')
-    }
-    next()
-  },
-  function (req, res, next) {
-    goodServ.updateGoodsState(
-      req.params.id,
-      req.params.state,
-      function (err, good) {
-        if (err) return res.sendResult(null, 400, err)
-        res.sendResult(good, 200, '更新成功')
-      }
-    )(req, res, next)
   }
 )
 

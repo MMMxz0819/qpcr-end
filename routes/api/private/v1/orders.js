@@ -6,7 +6,7 @@ var path = require('path')
 var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 
 // 通过验证模块获取分类管理
-var orderServ = authorization.getService('OrderService')
+var staticServ = authorization.getService('OrderService')
 
 // 检测数据列表
 router.get(
@@ -60,7 +60,7 @@ router.get(
       conditions['chart'] = req.query.chart
     }
 
-    orderServ.getAllOrders(conditions, function (err, result) {
+    staticServ.getAllStatics(conditions, function (err, result) {
       if (err) return res.sendResult(null, 400, err)
       res.sendResult(result, 200, '获取成功')
     })(req, res, next)
@@ -77,7 +77,7 @@ router.post(
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    orderServ.createOrder(params, function (err, newOrder) {
+    staticServ.createStatic(params, function (err, newOrder) {
       if (err) return res.sendResult(null, 400, err)
       return res.sendResult(newOrder, 201, '创建检测数据成功')
     })(req, res, next)
@@ -94,7 +94,7 @@ router.put(
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    orderServ.updateOrder(req.params.id, params, function (err, newOrder) {
+    staticServ.updateStatic(req.params.id, params, function (err, newOrder) {
       if (err) return res.sendResult(null, 400, err)
       return res.sendResult(newOrder, 201, '更新检测数据成功')
     })(req, res, next)
@@ -102,7 +102,7 @@ router.put(
 )
 
 router.get('/:id', function (req, res, next) {
-  orderServ.getOrder(req.params.id, function (err, result) {
+  staticServ.getStatic(req.params.id, function (err, result) {
     if (err) return res.sendResult(null, 400, err)
 
     return res.sendResult(result, 200, '获取成功')
@@ -118,7 +118,7 @@ router.post(
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    orderServ.dowanloadOrder(params, function (err, newOrder) {
+    staticServ.dowanloadOrder(params, function (err, newOrder) {
       if (err) return res.sendResult(null, 400, err)
       return res.sendResult('111', 201, 'get')
     })(req, res, next)
@@ -139,7 +139,7 @@ router.delete(
   },
   // 业务逻辑
   function (req, res, next) {
-    orderServ.deleteStatic(req.params.id, function (err) {
+    staticServ.deleteStatic(req.params.id, function (err) {
       if (err) return res.sendResult(null, 400, '删除失败')
       else return res.sendResult(null, 200, '删除成功')
     })(req, res, next)

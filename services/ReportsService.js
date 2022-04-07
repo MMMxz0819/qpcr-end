@@ -75,24 +75,24 @@ function reportOne(cb) {
 }
 
 function reportTwo(cb) {
-  dao.list('ReportTwoModel', null, function (err, result) {
-    if (err) return cb('获取报表数据失败')
-    var dateKeyResult = {}
-    for (var idx in result) {
-      var record = result[idx]
-      var dateKey =
-        record['rp2_date'].getFullYear() +
-        '-' +
-        (record['rp2_date'].getMonth() + 1) +
-        '-' +
-        record['rp2_date'].getDate()
-      if (!dateKeyResult[dateKey]) {
-        dateKeyResult[dateKey] = []
-      }
-      dateKeyResult[dateKey].push(record)
-    }
-    cb(null, dateKeyResult)
-  })
+  // dao.list('ReportTwoModel', null, function (err, result) {
+  //   if (err) return cb('获取报表数据失败')
+  //   var dateKeyResult = {}
+  //   for (var idx in result) {
+  //     var record = result[idx]
+  //     var dateKey =
+  //       record['rp2_date'].getFullYear() +
+  //       '-' +
+  //       (record['rp2_date'].getMonth() + 1) +
+  //       '-' +
+  //       record['rp2_date'].getDate()
+  //     if (!dateKeyResult[dateKey]) {
+  //       dateKeyResult[dateKey] = []
+  //     }
+  //     dateKeyResult[dateKey].push(record)
+  //   }
+  //   cb(null, dateKeyResult)
+  // })
 }
 
 function reportThree(cb) {
