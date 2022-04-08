@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // 初始化数据库模块
-var database = require('./modules/database')
+var database = require('../modules/database.js')
 database.initialize(app, function(err) {
   if (err) {
     console.error('连接数据库失败失败 %s', err)
@@ -105,8 +105,7 @@ app.use('/uploads/goodspics', express.static('uploads/goodspics'))
 var upload_config = require('config').get('upload_config')
 app.use('/' + upload_config.get('upload_ueditor'), express.static(upload_config.get('upload_ueditor')))
 
-const logistics = require('./modules/Logistics.js')
-app.get('/api/private/v1/kuaidi/:orderno', logistics.getLogisticsInfo)
+
 
 // 定义日志
 // var log4js = require('./modules/logger');

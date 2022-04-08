@@ -213,7 +213,7 @@ module.exports.updateMgrState = function (id, state, cb) {
  */
 module.exports.login = function (username, password, cb) {
   console.log(cb)
-  logger.debug('login => username:%s,password:%s', username, password)
+  logger.debug('用户登录： username:%s', username)
   // logger.debug(username);
   managersDAO.findOne({ mg_name: username }, function (err, manager) {
     if (err || !manager) {

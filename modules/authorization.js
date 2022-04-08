@@ -45,7 +45,6 @@ function Invocation(serviceName, actionName, serviceModule, origFunc) {
 
 // 获取服务对象
 module.exports.getService = function (serviceName) {
-	console.log(11111111111111);
   if (global.service_caches[serviceName]) {
     console.log(global.service_caches[serviceName])
     return global.service_caches[serviceName]

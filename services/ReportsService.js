@@ -1,6 +1,7 @@
 var _ = require('lodash')
 var path = require('path')
 var dao = require(path.join(process.cwd(), 'dao/DAO'))
+const fs = require('fs')
 
 function reportOne(cb) {
   dao.list('ReportThreeModel', null, function (err, result) {
@@ -15,7 +16,6 @@ function reportOne(cb) {
           (record['rp1_date'].getMonth() + 1) +
           '-' +
           record['rp1_date'].getDate()
-        console.log(str)
         return str
       })
     )
@@ -75,24 +75,13 @@ function reportOne(cb) {
 }
 
 function reportTwo(cb) {
-  // dao.list('ReportTwoModel', null, function (err, result) {
-  //   if (err) return cb('获取报表数据失败')
-  //   var dateKeyResult = {}
-  //   for (var idx in result) {
-  //     var record = result[idx]
-  //     var dateKey =
-  //       record['rp2_date'].getFullYear() +
-  //       '-' +
-  //       (record['rp2_date'].getMonth() + 1) +
-  //       '-' +
-  //       record['rp2_date'].getDate()
-  //     if (!dateKeyResult[dateKey]) {
-  //       dateKeyResult[dateKey] = []
-  //     }
-  //     dateKeyResult[dateKey].push(record)
-  //   }
-  //   cb(null, dateKeyResult)
-  // })
+  // read contents of the file
+  const data = fs.readFileSync('./cheese.log', 'UTF-8')
+
+  // split the contents by new line
+  const lines = data.split(/\r?\n/)
+
+  cb(null, lines)
 }
 
 function reportThree(cb) {

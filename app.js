@@ -129,8 +129,6 @@ app.use(
   express.static(upload_config.get('upload_ueditor'))
 )
 
-const logistics = require('./modules/Logistics.js')
-app.get('/api/private/v1/kuaidi/:orderno', logistics.getLogisticsInfo)
 
 // 定义日志
 // var log4js = require('./modules/logger');
