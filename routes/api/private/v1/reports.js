@@ -10,7 +10,6 @@ var authorization = require(path.join(process.cwd(),"/modules/authorization"));
 var reportsServ = authorization.getService("ReportsService");
 
 router.get("/type/:typeid",
-	// 参数验证
 	function(req,res,next){
 		if(!req.params.typeid) {
 			return res.sendResult(null,400,"报表类型不能为空");

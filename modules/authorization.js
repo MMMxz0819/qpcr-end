@@ -59,9 +59,8 @@ module.exports.getService = function (serviceName) {
   }
   global.service_caches[serviceName] = {}
 
-  console.log('*****************************************')
-  console.log('拦截服务 => %s', serviceName)
-  console.log('*****************************************')
+  console.log(serviceName)
+
   for (actionName in serviceModule) {
     if (
       serviceModule &&
@@ -75,11 +74,9 @@ module.exports.getService = function (serviceName) {
         serviceModule,
         origFunc
       )
-      console.log('action => %s', actionName)
     }
   }
   // console.log(global.service_caches);
-  console.log('*****************************************\n')
   return global.service_caches[serviceName]
 }
 

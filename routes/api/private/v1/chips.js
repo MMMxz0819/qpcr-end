@@ -9,12 +9,31 @@ var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 // 通过验证模块获取分类管理
 var chipServ = authorization.getService('ChipService')
 
+// 更新芯片的图片
+router.put(
+  '/:id/pics',
+
+  function (req, res, next) {
+    if (!req.params.id) {
+      return res.sendResult(null, 400, '芯片ID不能为空')
+    }
+    if (isNaN(parseInt(req.params.id)))
+      return res.sendResult(null, 400, '芯片ID必须是数字')
+    next()
+  },
+  // 业务逻辑
+  function (req, res, next) {
+    chipServ.updateChipPics(req.params.id, req.body, function (err, chip) {
+      if (err) return res.sendResult(null, 400, err)
+      res.sendResult(chip, 200, '更新成功')
+    })(req, res, next)
+  }
+)
+
 // 芯片列表
 router.get(
   '/',
-  // 验证参数
   function (req, res, next) {
-    // 参数验证
     if (!req.query.pagenum || req.query.pagenum <= 0)
       return res.sendResult(null, 400, 'pagenum 参数错误')
     if (!req.query.pagesize || req.query.pagesize <= 0)
@@ -41,7 +60,6 @@ router.get(
 // 添加芯片
 router.post(
   '/',
-  // 参数验证
   function (req, res, next) {
     next()
   },
@@ -58,7 +76,7 @@ router.post(
 // 更新芯片
 router.put(
   '/:id',
-  // 参数验证
+
   function (req, res, next) {
     if (!req.params.id) {
       return res.sendResult(null, 400, '芯片ID不能为空')
@@ -80,7 +98,7 @@ router.put(
 // 获取芯片详情
 router.get(
   '/:id',
-  // 参数验证
+
   function (req, res, next) {
     if (!req.params.id) {
       return res.sendResult(null, 400, '芯片ID不能为空')
@@ -101,7 +119,7 @@ router.get(
 // 删除芯片
 router.delete(
   '/:id',
-  // 参数验证
+
   function (req, res, next) {
     if (!req.params.id) {
       return res.sendResult(null, 400, '芯片ID不能为空')
@@ -120,27 +138,6 @@ router.delete(
         logger.debug(`删除芯片: id${req.params.id}`)
         return res.sendResult(null, 200, '删除成功')
       }
-    })(req, res, next)
-  }
-)
-
-// 更新芯片的图片
-router.put(
-  '/:id/pics',
-  // 参数验证
-  function (req, res, next) {
-    if (!req.params.id) {
-      return res.sendResult(null, 400, '芯片ID不能为空')
-    }
-    if (isNaN(parseInt(req.params.id)))
-      return res.sendResult(null, 400, '芯片ID必须是数字')
-    next()
-  },
-  // 业务逻辑
-  function (req, res, next) {
-    chipServ.updateChipPics(req.params.id, req.body, function (err, chip) {
-      if (err) return res.sendResult(null, 400, err)
-      res.sendResult(chip, 200, '更新成功')
     })(req, res, next)
   }
 )

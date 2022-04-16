@@ -7,7 +7,6 @@ var mount = require('mount-routes')
 
 var app = express()
 
-
 /**
  *
  * 公共系统初始化
@@ -18,29 +17,30 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 初始化数据库模块
 var database = require('../modules/database.js')
-database.initialize(app, function(err) {
+database.initialize(app, function (err) {
   if (err) {
     console.error('连接数据库失败失败 %s', err)
   }
 })
 
-/**
- *
- *	后台管理系统初始化
- *
- */
-// 获取管理员逻辑模块
-var managerService = require(path.join(process.cwd(), 'services/ManagerService'))
+// 获取角色逻辑模块
+var managerService = require(path.join(
+  process.cwd(),
+  'services/ManagerService'
+))
 // 获取角色服务模块
 var roleService = require(path.join(process.cwd(), 'services/RoleService'))
 
 // 设置跨域和相应数据格式
-app.all('/api/*', function(req, res, next) {
+app.all('/api/*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, mytoken')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Authorization')
   res.setHeader('Content-Type', 'application/json;charset=utf-8')
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type,Content-Length, Authorization, Accept,X-Requested-With'
+  )
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
   res.header('X-Powered-By', ' 3.2.1')
   if (req.method == 'OPTIONS') res.send(200)
@@ -64,12 +64,25 @@ app.use('/api/private/v1/*', admin_passport.tokenAuth)
 var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 
 // 设置全局权限
-authorization.setAuthFn(function(req, res, next, serviceName, actionName, passFn) {
-  if (!req.userInfo || isNaN(parseInt(req.userInfo.rid))) return res.sendResult('无角色ID分配')
+authorization.setAuthFn(function (
+  req,
+  res,
+  next,
+  serviceName,
+  actionName,
+  passFn
+) {
+  if (!req.userInfo || isNaN(parseInt(req.userInfo.rid)))
+    return res.sendResult('无角色ID分配')
   // 验证权限
-  roleService.authRight(req.userInfo.rid, serviceName, actionName, function(err, pass) {
-    passFn(pass)
-  })
+  roleService.authRight(
+    req.userInfo.rid,
+    serviceName,
+    actionName,
+    function (err, pass) {
+      passFn(pass)
+    }
+  )
 })
 
 /**
@@ -80,11 +93,14 @@ authorization.setAuthFn(function(req, res, next, serviceName, actionName, passFn
 // 带路径的用法并且可以打印出路有表
 mount(app, path.join(process.cwd(), '/routes'), true)
 
-app.all('/ueditor/ue', function(req, res, next) {
+app.all('/ueditor/ue', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, mytoken')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Authorization')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, X_Requested_With')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, X_Requested_With'
+  )
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
   res.header('X-Powered-By', ' 3.2.1')
   if (req.method == 'OPTIONS') res.send(200)
@@ -103,9 +119,10 @@ app.use('/x/common', express.static('uploads/common'))
 app.use('/uploads/goodspics', express.static('uploads/goodspics'))
 
 var upload_config = require('config').get('upload_config')
-app.use('/' + upload_config.get('upload_ueditor'), express.static(upload_config.get('upload_ueditor')))
-
-
+app.use(
+  '/' + upload_config.get('upload_ueditor'),
+  express.static(upload_config.get('upload_ueditor'))
+)
 
 // 定义日志
 // var log4js = require('./modules/logger');
@@ -117,7 +134,7 @@ app.use('/' + upload_config.get('upload_ueditor'), express.static(upload_config.
  *
  */
 // 如果没有路径处理就返回 Not Found
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.sendResult(null, 404, 'Not Found')
 })
 

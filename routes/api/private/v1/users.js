@@ -34,7 +34,6 @@ router.get("/",
 		
 	}
 );
-
 // 获取用户信息
 router.get("/:id",
 	// 参数验证
@@ -52,7 +51,6 @@ router.get("/:id",
 		})(req,res,next);
 	}
 );
-
 // 创建用户
 router.post("/",
 	// 验证参数
@@ -85,8 +83,6 @@ router.post("/",
 		})(req,res,next);
 	}
 );
-
-
 // 修改用户信息
 router.put("/:id",
 	// 参数验证
@@ -112,7 +108,6 @@ router.put("/:id",
 		)(req,res,next);
 	}
 );
-
 // 删除用户信息
 router.delete("/:id",
 	// 验证参数
@@ -130,7 +125,6 @@ router.delete("/:id",
 		})(req,res,next);
 	}
 );
-
 // 分配用户角色
 router.put("/:id/role",
 	// 参数验证
@@ -153,8 +147,6 @@ router.put("/:id/role",
 		})(req,res,next);
 	}
 );
-
-
 router.put("/:id/state/:state",
 	// 参数验证
 	function(req,res,next) {

@@ -4,7 +4,7 @@ var Password = require('node-php-password')
 var logger = require('../modules/logger').logger()
 
 /**
- * 获取所有管理员
+ * 获取所有用户
  * @param  {[type]}   conditions 查询条件
  * 查询条件统一规范
  * conditions
@@ -19,7 +19,7 @@ module.exports.getAllManagers = function (conditions, cb) {
   if (!conditions.pagenum) return cb('pagenum 参数不合法')
   if (!conditions.pagesize) return cb('pagesize 参数不合法')
 
-  // 通过关键词获取管理员数量
+  // 通过关键词获取用户数量
   managersDAO.countByKey(conditions['query'], function (err, count) {
     key = conditions['query']
     pagenum = parseInt(conditions['pagenum'])
@@ -60,7 +60,7 @@ module.exports.getAllManagers = function (conditions, cb) {
 }
 
 /**
- * 创建管理员
+ * 创建用户
  *
  * @param  {[type]}   user 用户数据集
  * @param  {Function} cb   回调函数
@@ -99,9 +99,9 @@ module.exports.createManager = function (params, cb) {
 }
 
 /**
- * 更新管理员信息
+ * 更新用户信息
  *
- * @param  {[type]}   params 管理员信息
+ * @param  {[type]}   params 用户信息
  * @param  {Function} cb     回调函数
  */
 module.exports.updateManager = function (params, cb) {
@@ -125,15 +125,15 @@ module.exports.updateManager = function (params, cb) {
 }
 
 /**
- * 通过管理员 ID 获取管理员信息
+ * 通过用户 ID 获取用户信息
  *
- * @param  {[type]}   id 管理员 ID
+ * @param  {[type]}   id 用户 ID
  * @param  {Function} cb 回调函数
  */
 module.exports.getManager = function (id, cb) {
   managersDAO.show(id, function (err, manager) {
     if (err) return cb(err)
-    if (!manager) return cb('该管理员不存在')
+    if (!manager) return cb('该用户不存在')
     cb(null, {
       id: manager.mg_id,
       rid: manager.role_id,
@@ -145,9 +145,9 @@ module.exports.getManager = function (id, cb) {
 }
 
 /**
- * 通过管理员 ID 进行删除操作
+ * 通过用户 ID 进行删除操作
  *
- * @param  {[type]}   id 管理员ID
+ * @param  {[type]}   id 用户ID
  * @param  {Function} cb 回调函数
  */
 module.exports.deleteManager = function (id, cb) {
@@ -158,15 +158,15 @@ module.exports.deleteManager = function (id, cb) {
 }
 
 /**
- * 为管理员设置角色
+ * 为用户设置角色
  *
- * @param {[type]}   id  管理员ID
+ * @param {[type]}   id  用户ID
  * @param {[type]}   rid 角色ID
  * @param {Function} cb  回调函数
  */
 module.exports.setRole = function (id, rid, cb) {
   managersDAO.show(id, function (err, manager) {
-    if (err || !manager) cb('管理员ID不存在')
+    if (err || !manager) cb('用户ID不存在')
 
     managersDAO.update(
       { mg_id: manager.mg_id, role_id: rid },
@@ -186,7 +186,7 @@ module.exports.setRole = function (id, rid, cb) {
 
 module.exports.updateMgrState = function (id, state, cb) {
   managersDAO.show(id, function (err, manager) {
-    if (err || !manager) cb('管理员ID不存在')
+    if (err || !manager) cb('用户ID不存在')
 
     managersDAO.update(
       { mg_id: manager.mg_id, mg_state: state },
@@ -206,13 +206,12 @@ module.exports.updateMgrState = function (id, state, cb) {
 }
 
 /**
- * 管理员登录
+ * 用户登录
  * @param  {[type]}   username 用户名
  * @param  {[type]}   password 密码
  * @param  {Function} cb       回调
  */
 module.exports.login = function (username, password, cb) {
-  console.log(cb)
   logger.debug('用户登录： username:%s', username)
   // logger.debug(username);
   managersDAO.findOne({ mg_name: username }, function (err, manager) {

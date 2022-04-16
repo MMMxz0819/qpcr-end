@@ -16,7 +16,7 @@ module.exports.timeList = function (start, end, pagesize, cb) {
     'SELECT COUNT(*) AS `c` FROM `sp_statics` WHERE `create_time` > ? AND `create_time`< ?'
   sql =
     'SELECT * FROM sp_statics WHERE `create_time` >= ? AND `create_time`<= ? '
-  sqlDate =
+  sqlDate = //
     'SELECT * FROM sp_statics WHERE `create_time` >= ? AND `create_time`<= ? group by FROM_UNIXTIME(create_time,"%Y%m%d");'
   // sql =
   //   'SELECT DATE(create_time) AS create_time, COUNT(*) AS num FROM sp_statics WHERE `create_time` > ? AND `create_time`< ? '

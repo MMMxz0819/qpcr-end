@@ -4,73 +4,13 @@ var dao = require(path.join(process.cwd(), 'dao/DAO'))
 const fs = require('fs')
 
 function reportOne(cb) {
-  dao.list('ReportThreeModel', null, function (err, result) {
+  dao.list('ReportOneModel', null, function (err, result) {
     if (err) return cb('获取报表数据失败')
-    var areaKeyResult = {}
-    var areaKeys = _.union(_.map(result, 'rp1_area'))
-    var dateKeys = _.union(
-      _.map(result, function (record) {
-        str =
-          record['rp1_date'].getFullYear() +
-          '-' +
-          (record['rp1_date'].getMonth() + 1) +
-          '-' +
-          record['rp1_date'].getDate()
-        return str
-      })
-    )
-    for (var idx in result) {
-      var record = result[idx]
-      var dateKey =
-        record['rp1_date'].getFullYear() +
-        '-' +
-        (record['rp1_date'].getMonth() + 1) +
-        '-' +
-        record['rp1_date'].getDate()
-      if (!areaKeyResult[record['rp1_area']]) {
-        areaKeyResult[record['rp1_area']] = {}
-      }
-      areaKeyResult[record['rp1_area']][dateKey] = record
-    }
-    // 格式输出
-    var series = []
-    _(areaKeys).forEach(function (areaKey) {
-      var data = []
-
-      _(dateKeys).forEach(function (dateKey) {
-        console.log('areaKey:' + areaKey + ',' + 'dateKey:' + dateKey)
-        if (areaKeyResult[areaKey][dateKey]) {
-          data.push(areaKeyResult[areaKey][dateKey]['rp1_user_count'])
-        } else {
-          data.push(0)
-        }
-      })
-      series.push({
-        name: areaKey,
-        type: 'line',
-        stack: '总量',
-        areaStyle: { normal: {} },
-        data: data,
-      })
+    var resultDta = {}
+    resultDta['result'] = _.map(result, function (result) {
+      return result //_.omit(order,);
     })
-    data = {
-      legend: {
-        data: areaKeys,
-      },
-      yAxis: [
-        {
-          type: 'value',
-        },
-      ],
-      xAxis: [
-        {
-          data: dateKeys,
-        },
-      ],
-      series: series,
-    }
-
-    cb(null, data)
+    cb(err, resultDta)
   })
 }
 
@@ -95,7 +35,17 @@ function reportThree(cb) {
   })
 }
 
-function reportFour(cb) {}
+// function reportFour(cb) {
+//   // call.js
+//   const exec = require('child_process').exec
+//   const execSync = require('child_process').execSync
+//   // 同步执行
+//   const output = execSync('python ../web.py')
+//   console.log('sync: ' + output.toString())
+//   console.log('over')
+
+//   cb(null, '成功')
+// }
 
 module.exports.reports = function (typeid, cb) {
   console.log(typeid)
@@ -118,12 +68,12 @@ module.exports.reports = function (typeid, cb) {
         cb(null, result)
       })
       break
-    case 4:
-      reportFour(function (err, result) {
-        if (err) return cb(err)
-        cb(null, result)
-      })
-      break
+    // case 4:
+    //   reportFour(function (err, result) {
+    //     if (err) return cb(err)
+    //     cb(null, result)
+    //   })
+    //   break
     default:
       cb('类型出错')
       break

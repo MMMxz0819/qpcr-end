@@ -43,7 +43,7 @@ function clipImage(srcPath, savePath, newWidth, newHeight) {
 }
 
 /**
- * 通过参数生成产品基本信息
+ * 通过参数生成芯片基本信息
  *
  * @param  {[type]} params.cb [description]
  * @return {[type]}           [description]
@@ -251,18 +251,10 @@ function doUpdateChipPics(info) {
         var newpics = info.pics ? info.pics : []
         var newpicsKV = _.keyBy(newpics, 'pics_id')
         var oldpicsKV = _.keyBy(oldpics, 'pics_id')
-
-        /**
-         * 保存图片集合
-         */
-        // 需要新建的图片集合
         var addNewpics = []
-        // 需要保留的图片的集合
         var reservedOldpics = []
-        // 需要删除的图片集合
         var delOldpics = []
 
-        // 如果提交的新的数据中有老的数据的pics_id就说明保留数据，否则就删除
         _(oldpics).forEach(function (pic) {
           if (newpicsKV[pic.pics_id]) {
             reservedOldpics.push(pic)
@@ -271,18 +263,13 @@ function doUpdateChipPics(info) {
           }
         })
 
-        // 从新提交的数据中检索出需要新创建的数据
-        // 计算逻辑如果提交的数据不存在 pics_id 字段说明是新创建的数据
         _(newpics).forEach(function (pic) {
           if (!pic.pics_id && pic.pic) {
             addNewpics.push(pic)
           }
         })
 
-        // 开始处理芯片图片数据逻辑
-        // 1. 删除芯片图片数据集合
         _(delOldpics).forEach(function (pic) {
-          // 1.1 删除图片物理路径
           batchFns.push(
             removeGoodPicFile(path.join(process.cwd(), pic.pics_big))
           )
@@ -292,14 +279,11 @@ function doUpdateChipPics(info) {
           batchFns.push(
             removeGoodPicFile(path.join(process.cwd(), pic.pics_sma))
           )
-          // 1.2 数据库中删除图片数据记录
           batchFns.push(removeGoodPic(pic))
         })
 
-        // 2. 处理新建图片的集合
         _(addNewpics).forEach(function (pic) {
           if (!pic.pics_id && pic.pic) {
-            // 2.1 通过原始图片路径裁剪出需要的图片
             var src = path.join(process.cwd(), pic.pic)
             var tmp = src.split(path.sep)
             var filename = tmp[tmp.length - 1]
@@ -316,17 +300,13 @@ function doUpdateChipPics(info) {
               clipImage(src, path.join(process.cwd(), pic.pics_sma), 200, 200)
             )
             pic.chip_id = chip.chip_id
-            // 2.2 数据库中新建数据记录
             batchFns.push(createGoodPic(pic))
           }
         })
 
-        // 如果没有任何图片操作就返回
         if (batchFns.length == 0) {
           return resolve(info)
         }
-
-        // 批量执行所有操作
         Promise.all(batchFns)
           .then(function () {
             resolve(info)
@@ -349,7 +329,6 @@ function doGetAllPics(info) {
   return new Promise(function (resolve, reject) {
     var chip = info.chip
     if (!chip.chip_id) return reject('获取芯片图片必须先获取芯片信息')
-    // 3. 组装最新的数据挂载在“info”中“chip”对象下
     dao.list(
       'ChipPicModel',
       { columns: { chip_id: chip.chip_id } },
@@ -372,9 +351,6 @@ function doGetAllPics(info) {
           } else {
             pic.pics_sma_url = upload_config.get('baseURL') + pic.pics_sma
           }
-
-          // pic.pics_mid_url = upload_config.get("baseURL") + pic.pics_mid;
-          // pic.pics_sma_url = upload_config.get("baseURL") + pic.pics_sma;
         })
         info.chip.pics = chipPics
         resolve(info)
@@ -390,18 +366,11 @@ function doGetAllPics(info) {
  * @param  {Function} cb     回调函数
  */
 module.exports.createChip = function (params, cb) {
-  // 验证参数 & 生成数据
   generateChipInfo(params)
-    // 检查芯片名称
     .then(checkChipName)
-    // 创建芯片
     .then(createChipInfo)
-    // 更新芯片图片
     .then(doUpdateChipPics)
-    // 更新芯片参数
-    // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
-    // 创建成功
     .then(function (info) {
       logger.debug(`添加芯片:${info.chip.chip_name}`)
       cb(null, info.chip)
@@ -485,14 +454,7 @@ module.exports.getAllChips = function (params, cb) {
       resultDta['total'] = count
       resultDta['pagenum'] = pagenum
       resultDta['chips'] = _.map(chips, function (chip) {
-        // const chartdata = chartData()
-        return _.omit(
-          // { ...chip, ...chartdata },
-          chip,
-          // chartdata,
-          'is_del',
-          'delete_time'
-        )
+        return _.omit(chip, 'is_del', 'delete_time')
       })
       cb(err, resultDta)
     })
@@ -508,18 +470,11 @@ module.exports.getAllChips = function (params, cb) {
  */
 module.exports.updateChip = function (id, params, cb) {
   params.chip_id = id
-  // 验证参数 & 生成数据
   generateChipInfo(params)
-    // 检查芯片名称
     .then(checkChipName)
-    // 创建芯片
     .then(updateChipInfo)
-    // 更新芯片图片
     .then(doUpdateChipPics)
-    // 更新芯片参数
-    // .then(doUpdateGoodAttributes)
     .then(doGetAllPics)
-    // 创建成功
     .then(function (info) {
       cb(null, info.chip)
     })
@@ -566,12 +521,3 @@ module.exports.getChipById = function (id, cb) {
       cb(err)
     })
 }
-
-// module.exports.getChartData = function (id, cb) {
-//   chartData()
-// }
-
-// downloadFile(
-//   'http://test-1-1308630349.cos.ap-guangzhou.myqcloud.com/1.txt',
-//   '2'
-// )

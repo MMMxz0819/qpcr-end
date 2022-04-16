@@ -38,21 +38,15 @@ function initialize(app,callback) {
 			// 获取映射文件路径
 			var modelsPath = path.join(process.cwd(),"/models");
 			
-			// 读取所有模型文件
 			fs.readdir(modelsPath,function(err, files) {
-				// 存放所有的加载模型函数
 				var loadModelAsynFns = new Array();
-				// console.log("开始加载 ORM 模型层文件 ");
 				for (var i = 0; i < files.length; i++) {
 					var modelPath = modelsPath + "/" +files[i];
-					// console.log("加载模型 %s",modelPath);
 					loadModelAsynFns[i] = db.loadAsync(modelPath);
 				}
 				
 				Promise.all(loadModelAsynFns)
 				.then(function(){
-					// console.log("ORM 模型加载完成");
-					// 挂载模型集合
 
 					for(var modelName in db.models){
 						models[modelName] = db.models[modelName];

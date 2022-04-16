@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var path = require('path')
+var logger = require('../../../../modules/logger.js').logger()
 
 // 获取验证模块
 var authorization = require(path.join(process.cwd(), '/modules/authorization'))
@@ -11,9 +12,8 @@ var staticServ = authorization.getService('StaticService')
 // 检测数据列表
 router.get(
   '/',
-  // 参数验证
+
   function (req, res, next) {
-    // 参数验证
     if (!req.query.pagenum || req.query.pagenum <= 0)
       return res.sendResult(null, 400, 'pagenum 参数错误')
     if (!req.query.pagesize || req.query.pagesize <= 0)
@@ -64,28 +64,30 @@ router.get(
     })(req, res, next)
   }
 )
-
 // 添加检测数据
 router.post(
   '/',
-  // 参数验证
+
   function (req, res, next) {
     next()
   },
   // 业务逻辑
   function (req, res, next) {
     var params = req.body
-    staticServ.createStatic(params, function (err, newOrder) {
-      if (err) return res.sendResult(null, 400, err)
-      return res.sendResult(newOrder, 201, '创建检测数据成功')
+    staticServ.createStatic(params, function (err, newStatic) {
+      if (err) {
+        logger.debug(`添加检测数据错误:${err}`)
+        return res.sendResult(null, 400, err)
+      }
+      logger.debug(`添加检测数据: id${newStatic.id}`)
+      return res.sendResult(newStatic, 201, '创建检测数据成功')
     })(req, res, next)
   }
 )
-
-// 更新检测数据发送状态
+// 更新检测数据
 router.put(
   '/:id',
-  // 参数验证
+
   function (req, res, next) {
     next()
   },
@@ -93,13 +95,16 @@ router.put(
   function (req, res, next) {
     var params = req.body
     console.log(params)
-    staticServ.updateStatic(req.params.id, params, function (err, newOrder) {
-      if (err) return res.sendResult(null, 400, err)
-      return res.sendResult(newOrder, 201, '更新检测数据成功')
+    staticServ.updateStatic(req.params.id, params, function (err, newStatic) {
+      if (err) {
+        console.log(err)
+        return res.sendResult(null, 400, err)
+      }
+      return res.sendResult(newStatic, 201, '更新检测数据成功')
     })(req, res, next)
   }
 )
-
+// 获取检测数据详情
 router.get('/:id', function (req, res, next) {
   staticServ.getStatic(req.params.id, function (err, result) {
     if (err) return res.sendResult(null, 400, err)
@@ -107,27 +112,10 @@ router.get('/:id', function (req, res, next) {
     return res.sendResult(result, 200, '获取成功')
   })(req, res, next)
 })
-
-router.post(
-  '/download',
-  // 参数验证
-  function (req, res, next) {
-    next()
-  },
-  // 业务逻辑
-  function (req, res, next) {
-    var params = req.body
-    staticServ.dowanloadOrder(params, function (err, newOrder) {
-      if (err) return res.sendResult(null, 400, err)
-      return res.sendResult('111', 201, 'get')
-    })(req, res, next)
-    // return res.sendResult('111', 201, 'get')
-  }
-)
-
+//删除检测数据
 router.delete(
   '/:id',
-  // 参数验证
+
   function (req, res, next) {
     if (!req.params.id) {
       return res.sendResult(null, 400, '检测ID不能为空')
@@ -139,8 +127,13 @@ router.delete(
   // 业务逻辑
   function (req, res, next) {
     staticServ.deleteStatic(req.params.id, function (err) {
-      if (err) return res.sendResult(null, 400, '删除失败')
-      else return res.sendResult(null, 200, '删除成功')
+      if (err) {
+        logger.debug(`删除检测数据错误:${err}`)
+        return res.sendResult(null, 400, '删除失败')
+      } else {
+        logger.debug(`删除检测数据: id${req.params.id}`)
+        return res.sendResult(null, 200, '删除成功')
+      }
     })(req, res, next)
   }
 )

@@ -5,8 +5,7 @@ var dao = require(path.join(process.cwd(), 'dao/DAO'))
 var AttributeDao = require(path.join(process.cwd(), 'dao/AttributeDAO'))
 var fs = require('fs')
 var Promise = require('bluebird')
-var uniqid = require('uniqid')
-var http = require('http')
+var moment = require('moment')
 
 // 获取检测数据
 function chartData(path) {
@@ -15,14 +14,9 @@ function chartData(path) {
   let y = []
 
   const file = path
-
-  // read contents of the file
   const data = fs.readFileSync(file, 'UTF-8')
-
-  // split the contents by new line
   const lines = data.split(/\r?\n/)
 
-  // print all lines
   lines.forEach((line) => {
     const each = line.split(',')
     x.push(each[0])
@@ -43,7 +37,25 @@ function chartData(path) {
   }
 }
 
+function saveStatic(data) {
+  let array = JSON.parse(data)
+  let context = array.map((v) => v.join(',')).join('\r\n')
+  const path = `D:/statcis/${moment().format('YYYY-MM-DD-HH-mm')}.txt`
+
+  fs.writeFile(path, context, (error) => {
+    // 创建失败
+    if (error) {
+      console.log(`创建失败：${error}`)
+    }
+    // 创建成功
+    console.log(`创建成功！`)
+  })
+
+  return path
+}
+
 function doCheckStaticParams(params) {
+  console.log(params)
   return new Promise(function (resolve, reject) {
     var info = {}
     if (params.static_id) info.static_id = params.static_id
@@ -56,7 +68,7 @@ function doCheckStaticParams(params) {
     if (params.static_chip) {
       info.static_chip = params.static_chip
     } else {
-      info.static_chip = '0'
+      info.static_chip = '1'
     }
 
     if (params.test_name) {
@@ -65,13 +77,19 @@ function doCheckStaticParams(params) {
       info.test_name = '个人'
     }
 
-    if (!params.static_path) reject('检测文件路径不能为空')
+    if (!params.static_XY &&!params.static_path) reject('检测数据不能为空')
     if (params.static_path) {
       info.static_path = params.static_path
     }
+    if (params.static_XY) {
+      const path = saveStatic(params.static_XY)
+      info.static_path = path
+    }
 
-    if (params.static_id) info.create_time = Date.parse(new Date()) / 1000
+    info.create_time = Date.parse(new Date()) / 1000
     info.update_time = Date.parse(new Date()) / 1000
+    info.is_del = '0'
+    info.delete_time = 0
 
     if (params.positive) info.positive = params.positive
 
@@ -82,7 +100,10 @@ function doCheckStaticParams(params) {
 function doCreateStatic(info) {
   return new Promise(function (resolve, reject) {
     dao.create('StaticModel', _.clone(info), function (err, newStatic) {
-      if (err) return reject('创建检测数据失败')
+      if (err) {
+        console.log(err)
+        return reject('创建检测数据失败')
+      }
       info.static = newStatic
       resolve(info)
     })
@@ -198,7 +219,6 @@ module.exports.deleteStatic = function (id, cb) {
       cb(null)
     }
   )
-  console.log('111111111')
 }
 
 module.exports.createStatic = function (params, cb) {
@@ -287,7 +307,6 @@ module.exports.getAllStatics = function (params, cb) {
         resultDta['statics'] = _.map(statics, function (static) {
           return _.omit(
             static,
-            // chartdata,
             'is_del',
 
             'delete_time'
