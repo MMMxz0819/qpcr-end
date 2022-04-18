@@ -6,6 +6,7 @@ module.exports = function (db, callback) {
       static_id: { type: 'serial', key: true },
       user_id: Number,
       static_number: String,
+      static_des: String,
       static_chip: [1, 2, 3],
       test_name: String,
       static_path: String,

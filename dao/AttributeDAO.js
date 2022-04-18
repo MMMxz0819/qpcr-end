@@ -33,3 +33,33 @@ module.exports.timeList = function (start, end, pagesize, cb) {
     })
   })
 }
+
+/**
+ * 获取参数列表数据
+ *
+ * @param  {[type]}   start 开始时间
+ * @param  {[type]}   end    结束时间
+ * @param  {Function} cb     回调函数
+ */
+
+module.exports.OneChipStaticList = function (start, end, chip, cb) {
+  db = databaseModule.getDatabase()
+  sqlcount =
+    'SELECT COUNT(*) AS `c` FROM `sp_statics` WHERE `create_time` >= ? AND `create_time`<= ? AND `static_chip` = ? '
+  sql =
+    'SELECT * FROM sp_statics WHERE `static_chip` = ? AND `create_time` >= ? AND `create_time`<= ?  '
+  sqlDate = //
+    'SELECT * FROM sp_statics WHERE`static_chip` = ? AND `create_time` >= ? AND `create_time`<= ?  group by FROM_UNIXTIME(create_time,"%Y%m%d");'
+  database.driver.execQuery(sqlDate, [start, end, chip], function (err, date) {
+    console.log(err)
+    if (err) return cb('查询执行出错')
+    database.driver.execQuery(sql, [start, end, chip], function (err, statics) {
+      if (err) {
+        console.log(err)
+        return cb('查询执行出错')
+      }
+      // console.log(statics)
+      cb(null, statics, date)
+    })
+  })
+}
