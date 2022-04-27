@@ -15,9 +15,9 @@ module.exports = function (db, callback) {
       upd_time: Number,
       delete_time: Number,
       color_mumber: Number,
-      cat_one_id: Number,
-      cat_two_id: Number,
-      cat_three_id: Number,
+      cat_one_id: String,
+      cat_two_id: String,
+      cat_three_id: String,
     },
     {
       table: 'sp_chip',

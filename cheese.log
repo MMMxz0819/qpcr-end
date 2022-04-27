@@ -64,3 +64,101 @@
 [2022-04-17T11:08:31.827] [DEBUG] cheese - 用户登录： username:admin
 [2022-04-17T11:30:51.570] [DEBUG] cheese - 用户登录： username:testAdd
 [2022-04-17T11:31:14.046] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-24T16:51:20.613] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-24T17:10:30.868] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-24T17:11:35.350] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:03:15.788] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:04:40.507] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:06:47.956] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:06:55.240] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:13:24.055] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:13:36.397] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:15:16.122] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:16:04.281] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:17:51.994] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:22:06.499] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:22:13.627] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:23:39.672] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T17:34:03.341] [DEBUG] cheese - 用户登录： username:aad
+[2022-04-25T17:34:03.345] [DEBUG] cheese - null
+[2022-04-25T17:34:25.370] [DEBUG] cheese - 用户登录： username:aaaa
+[2022-04-25T17:34:25.429] [DEBUG] cheese - null
+[2022-04-25T17:35:07.050] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-25T17:35:07.053] [DEBUG] cheese - null
+[2022-04-25T17:35:48.024] [DEBUG] cheese - 用户登录： username:aa
+[2022-04-25T17:35:48.027] [DEBUG] cheese - null
+[2022-04-25T17:39:26.888] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T20:46:34.099] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T20:57:34.743] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:41:46.520] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:44:40.648] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:44:40.853] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:45:21.851] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:45:37.359] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:45:37.540] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-25T21:46:08.585] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-25T21:46:10.487] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T09:54:00.545] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T10:17:24.747] [DEBUG] cheese - 添加芯片:testSIR
+[2022-04-26T10:33:14.658] [DEBUG] cheese - 删除芯片: id960
+[2022-04-26T11:39:26.510] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T11:39:39.174] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T11:41:48.442] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T11:41:51.767] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T11:42:04.056] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T11:42:05.489] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T11:42:38.625] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T11:44:12.846] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:44:12.849] [DEBUG] cheese - null
+[2022-04-26T11:44:34.838] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:44:34.840] [DEBUG] cheese - null
+[2022-04-26T11:46:10.825] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:46:10.827] [DEBUG] cheese - null
+[2022-04-26T11:47:16.233] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:47:16.235] [DEBUG] cheese - null
+[2022-04-26T11:49:06.549] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:49:06.553] [DEBUG] cheese - null
+[2022-04-26T11:49:30.740] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:49:30.744] [DEBUG] cheese - null
+[2022-04-26T11:49:49.174] [DEBUG] cheese - 用户登录： username:aa
+[2022-04-26T11:49:49.177] [DEBUG] cheese - null
+[2022-04-26T11:50:29.207] [DEBUG] cheese - 用户登录： username:aa
+[2022-04-26T11:50:29.209] [DEBUG] cheese - null
+[2022-04-26T11:50:41.686] [DEBUG] cheese - 用户登录： username:a
+[2022-04-26T11:50:41.688] [DEBUG] cheese - null
+[2022-04-26T11:51:42.299] [DEBUG] cheese - 用户登录： username:a
+[2022-04-26T11:51:42.302] [DEBUG] cheese - null
+[2022-04-26T11:52:13.492] [DEBUG] cheese - 用户登录： username:a
+[2022-04-26T11:52:13.496] [DEBUG] cheese - null
+[2022-04-26T11:53:44.246] [DEBUG] cheese - 用户登录： username:aaa
+[2022-04-26T11:53:44.250] [DEBUG] cheese - null
+[2022-04-26T14:37:56.152] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T14:57:45.311] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:13:06.019] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:15:31.679] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T15:16:08.685] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:17:02.370] [DEBUG] cheese - 添加检测数据错误:创建检测数据失败
+[2022-04-26T15:17:32.410] [DEBUG] cheese - 添加检测数据错误:创建检测数据失败
+[2022-04-26T15:18:08.216] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-26T15:20:36.957] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:20:38.423] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T15:21:15.138] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:21:16.938] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T15:22:01.492] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:22:01.635] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-26T15:22:43.647] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:22:44.853] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-26T15:23:12.073] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:23:22.249] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T15:23:49.330] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:23:50.248] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-26T15:25:17.379] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:26:13.590] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:26:14.675] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-26T15:29:21.618] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-26T15:29:33.137] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-27T15:42:09.284] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-27T15:51:22.143] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-27T16:50:46.411] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-27T16:59:30.505] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-27T19:26:35.782] [DEBUG] cheese - 用户登录： username:admin

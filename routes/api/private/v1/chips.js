@@ -21,7 +21,7 @@ router.put(
       return res.sendResult(null, 400, '芯片ID必须是数字')
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     chipServ.updateChipPics(req.params.id, req.body, function (err, chip) {
       if (err) return res.sendResult(null, 400, err)
@@ -40,7 +40,7 @@ router.get(
       return res.sendResult(null, 400, 'pagesize 参数错误')
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     var conditions = {
       pagenum: req.query.pagenum,
@@ -63,7 +63,7 @@ router.post(
   function (req, res, next) {
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     var params = req.body
     chipServ.createChip(params, function (err, newChip) {
@@ -85,7 +85,7 @@ router.put(
       return res.sendResult(null, 400, '芯片ID必须是数字')
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     var params = req.body
     chipServ.updateChip(req.params.id, params, function (err, newChip) {
@@ -107,7 +107,7 @@ router.get(
       return res.sendResult(null, 400, '芯片ID必须是数字')
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     chipServ.getChipById(req.params.id, function (err, chip) {
       if (err) return res.sendResult(null, 400, err)
@@ -128,7 +128,7 @@ router.delete(
       return res.sendResult(null, 400, '芯片ID必须是数字')
     next()
   },
-  // 业务逻辑
+
   function (req, res, next) {
     chipServ.deleteChip(req.params.id, function (err) {
       if (err) {

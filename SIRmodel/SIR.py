@@ -12,9 +12,15 @@ beta = float(sys.argv[1])     #感染系数
 gamma = float(sys.argv[2])    #治愈系数
 delta = 5e-6	#新增的死亡系数
 TS = 1
-ND = 1000.0  #易感染人数
+ND = 50.0  
 S0 = float(sys.argv[3])  #易感染人数
 I0 = float(sys.argv[4])   #感染人数
+
+# beta = 24e-5     #感染系数
+# gamma = 0.12    #治愈系数
+# S0 = 2000  #易感染人数
+# I0 = 32  #感染人数
+
 M0 = 0   #最开始的死亡人数
 INPUT = [S0, I0, 0.0, M0]
 
@@ -34,33 +40,40 @@ if __name__ == "__main__":
 	t_inc = TS
 	t_range = np.arange(t_start, t_end+t_inc, t_inc)
 	RES = spi.odeint(diff_eqs, INPUT, t_range)
+	print(np.array(RES))
+	# fig = pl.figure(1)
+	# pl.subplot(111)
+	# pl.plot(RES[:, 1], "-r", label = "Infectious")
+	# pl.plot(RES[:, 0], "-g", label = "Susceptibles")
+	# pl.plot(RES[:, 2], "-k", label = "Recovereds")
+	# pl.plot(RES[:, 3], "-b", label = "Death")
+	# pl.legend(loc = 0)
+	# pl.title("SIR model")
+	# pl.xlabel("Time")
+	# pl.ylabel("Infectious Susceptibles")
+	# pl.savefig("D:/kejian/bs/qpcr-front/src/assets/model.png")
 
-	fig = pl.figure(1)
-	pl.subplot(111)
-	pl.plot(RES[:, 1], "-r", label = "Infectious")
-	pl.plot(RES[:, 0], "-g", label = "Susceptibles")
-	pl.plot(RES[:, 2], "-k", label = "Recovereds")
-	pl.plot(RES[:, 3], "-b", label = "Death")
-	pl.legend(loc = 0)
-	pl.title("SIR model")
-	pl.xlabel("Time")
-	pl.ylabel("Infectious Susceptibles")
-	pl.savefig("D:/kejian/bs/qpcr-front/src/assets/model.png")
-
-	# # 读取数据
-	data = pd.read_csv("D:/kejian/bs/qpcr-end/data.csv", index_col = 'date')
+	# # # 读取数据
+	# data = pd.read_csv("D:/kejian/bs/qpcr-end/data.csv", index_col = 'date')
 		
-	print("MaxInfection:%d position:%d" % (RES[:,1].max(), np.argmax(RES[:, 1])))
-	# 将预测值与真实值画到一起
-	fig = pl.figure(2)
-	pl.subplot(111)
-	pl.plot(RES[:, 1], "-r", label = "Infectious")
-	pl.plot(data["现有感染者"], "o", label = "realdata")
-	pl.legend(loc = 0)
-	pl.title("Real and Trend")
-	pl.xlabel("Time")
-	pl.ylabel("Infectious Susceptibles")
-	pl.savefig("D:/kejian/bs/qpcr-front/src/assets/result.png")
+	# # print("MaxInfection:%d position:%d" % (RES[:,1].max(), np.argmax(RES[:, 1])))
+	# # 将预测值与真实值画到一起
+	# fig = pl.figure(2)
+	# pl.subplot(111)
+
+	# if(data["现有感染者"].max()<10):{
+	# 	pl.ylim(0, 100)
+	# }
+	# if(data["现有感染者"].max()<100):{
+	# 	pl.ylim(0, 500)
+	# }
+	# pl.plot(RES[:, 1], "-r", label = "Infectious")
+	# pl.plot(data["现有感染者"], "o", label = "realdata")
+	# pl.legend(loc = 0)
+	# pl.title("Real and Trend")
+	# pl.xlabel("Time")
+	# pl.ylabel("Infectious Susceptibles")
+	# pl.savefig("D:/kejian/bs/qpcr-front/src/assets/result.png")
 
 	
 

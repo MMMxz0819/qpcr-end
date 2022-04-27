@@ -435,17 +435,7 @@ module.exports.getAllChips = function (params, cb) {
     // 构建条件
     conditions['offset'] = offset
     conditions['limit'] = limit
-    conditions['only'] = [
-      'chip_id',
-      'chip_name',
-      'chip_price',
-      'chip_desc',
-      'add_time',
-      'chip_number',
-      'upd_time',
-      'color_mumber',
-      'line',
-    ]
+
     conditions['order'] = '-add_time'
 
     dao.list('ChipModel', conditions, function (err, chips) {

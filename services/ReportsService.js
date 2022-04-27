@@ -7,6 +7,39 @@ const moment = require('moment')
 const exec = require('child_process').exec
 const execSync = require('child_process').execSync
 
+//
+function handleOutput(data) {
+  const step1 = data
+    .replace(/\r\n /g, ',')
+    .replace(/\r\n/, '')
+    .replace(/ /g, ',')
+  const step2 = step1
+    .slice(2, step1.length - 2)
+    .split('],[')
+    .map((v) => v.split(','))
+
+  let Infectious = []
+  let Susceptibles = []
+  let Recovereds = []
+  let Death = []
+
+  step2
+    .filter((k) => k)
+    .map((v) => {
+      Infectious.push(Number(v[1]))
+      Susceptibles.push(Number(v[0]))
+      Recovereds.push(Number(v[2]))
+      Death.push(Number(v[3]))
+    })
+
+  return {
+    Infectious,
+    Susceptibles,
+    Recovereds,
+    Death,
+  }
+}
+
 //全国数据
 function reportOne(cb) {
   dao.list('ReportOneModel', null, function (err, result) {
@@ -88,7 +121,7 @@ function reportFour(chip, start, end, cb) {
         statics.push(oneDay)
       })
 
-      if (chipStatic.filter((v) => v).length !== 3) {
+      if (chipStatic.filter((v) => v).length !== 3 || !resultDta.all.length) {
         cb(err, { msg: '无法生成趋势图', res: resultDta })
         return
       }
@@ -123,10 +156,11 @@ function reportFour(chip, start, end, cb) {
             chipStatic[1]
           } ${chipStatic[2]} ${csvData[0].infecNow ? csvData[0].infecNow : 1}`
         )
-        console.log('sync: ' + output.toString())
+        // console.log('sync: ' + output.toString())
         console.log('over')
-
-        cb(err, { msg: '成功', res: resultDta })
+        const chart = handleOutput(output.toString())
+        //
+        cb(err, { msg: '成功', res: resultDta, chart: chart })
       })
     }
   )
