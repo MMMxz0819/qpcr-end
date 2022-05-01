@@ -79,7 +79,7 @@ router.post(
         logger.debug(`添加检测数据错误:${err}`)
         return res.sendResult(null, 400, err)
       }
-      logger.debug(`添加检测数据: id${newStatic.id}`)
+      logger.debug(`添加检测数据: id${newStatic.static_id}`)
       return res.sendResult(newStatic, 201, '创建检测数据成功')
     })(req, res, next)
   }

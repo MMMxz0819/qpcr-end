@@ -162,3 +162,50 @@
 [2022-04-27T16:50:46.411] [DEBUG] cheese - 用户登录： username:admin
 [2022-04-27T16:59:30.505] [DEBUG] cheese - 用户登录： username:admin
 [2022-04-27T19:26:35.782] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-29T10:07:56.350] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-29T10:09:44.597] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:04:22.906] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:07:27.106] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:26:56.664] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:27:10.891] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:27:12.309] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:29:25.880] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:29:40.918] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T10:29:44.011] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T11:05:15.532] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T11:08:31.068] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T11:09:30.984] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T11:14:56.966] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T15:39:23.207] [DEBUG] cheese - 添加检测数据错误:检测数据不能为空
+[2022-04-30T16:08:27.926] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T16:08:38.725] [DEBUG] cheese - 添加检测数据错误:检测数据不能为空
+[2022-04-30T16:09:29.064] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T16:09:40.783] [DEBUG] cheese - 添加检测数据错误:SyntaxError: Unexpected token , in JSON at position 1
+[2022-04-30T16:12:22.368] [DEBUG] cheese - 添加检测数据错误:ReferenceError: Cannot access 'array' before initialization
+[2022-04-30T16:15:26.854] [DEBUG] cheese - 添加检测数据错误:ReferenceError: Cannot access 'array' before initialization
+[2022-04-30T16:15:49.602] [DEBUG] cheese - 添加检测数据错误:ReferenceError: Cannot access 'array' before initialization
+[2022-04-30T16:16:21.309] [DEBUG] cheese - 添加检测数据错误:SyntaxError: Unexpected token , in JSON at position 1
+[2022-04-30T16:18:29.976] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-30T20:32:15.033] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T20:47:08.778] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T20:47:36.382] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T20:57:48.462] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T21:23:02.647] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T21:23:12.009] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-04-30T21:24:24.046] [DEBUG] cheese - 删除检测数据: id298906
+[2022-04-30T21:24:26.042] [DEBUG] cheese - 删除检测数据: id298905
+[2022-04-30T21:24:44.475] [DEBUG] cheese - 添加检测数据: id298906
+[2022-04-30T21:32:52.826] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T21:32:52.829] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T21:32:53.070] [DEBUG] cheese - 用户登录： username:admin
+[2022-04-30T21:33:10.159] [DEBUG] cheese - 添加检测数据错误:设备号不能为空
+[2022-04-30T21:37:52.669] [DEBUG] cheese - 添加检测数据: id298906
+[2022-04-30T21:37:55.762] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-01T16:58:39.750] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-01T17:06:02.032] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-01T17:06:36.302] [DEBUG] cheese - 添加检测数据: id298907
+[2022-05-01T17:12:10.222] [DEBUG] cheese - 添加检测数据: id298908
+[2022-05-01T22:05:09.333] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-01T22:27:30.469] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-05-01T22:27:47.935] [DEBUG] cheese - 添加检测数据: idundefined
+[2022-05-01T22:28:09.061] [DEBUG] cheese - 添加检测数据: id298913

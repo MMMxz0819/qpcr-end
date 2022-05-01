@@ -12,7 +12,6 @@ var reportsServ = authorization.getService('ReportsService')
 router.get(
   '/type',
   function (req, res, next) {
-    console.log('hhhhhhh', req.query)
     if (!req.query.typeid) {
       return res.sendResult(null, 400, '报表类型不能为空')
     }

@@ -122,7 +122,16 @@ function reportFour(chip, start, end, cb) {
       })
 
       if (chipStatic.filter((v) => v).length !== 3 || !resultDta.all.length) {
-        cb(err, { msg: '无法生成趋势图', res: resultDta })
+        cb(err, {
+          msg: '无法生成趋势图',
+          res: resultDta,
+          chart: {
+            Infectious: [],
+            Susceptibles: [],
+            Recovereds: [],
+            Death: [],
+          },
+        })
         return
       }
 

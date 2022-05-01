@@ -38,8 +38,8 @@ function chartData(path) {
 }
 
 function saveStatic(data) {
-  let array = JSON.parse(data)
-  let context = array.map((v) => v.join(',')).join('\r\n')
+  // let array = JSON.parse(data)
+  let context = data.map((v) => v.join(',')).join('\r\n')
   const path = `D:/statcis/${moment().format('YYYY-MM-DD-HH-mm')}.txt`
 
   fs.writeFile(path, context, (error) => {
@@ -55,7 +55,6 @@ function saveStatic(data) {
 }
 
 function doCheckStaticParams(params) {
-  console.log(params)
   return new Promise(function (resolve, reject) {
     var info = {}
     if (params.static_id) info.static_id = params.static_id
@@ -77,7 +76,7 @@ function doCheckStaticParams(params) {
       info.test_name = '个人'
     }
 
-    if (!params.static_XY &&!params.static_path) reject('检测数据不能为空')
+    if (!params.static_XY && !params.static_path) reject('检测数据不能为空')
     if (params.static_path) {
       info.static_path = params.static_path
     }
@@ -92,6 +91,8 @@ function doCheckStaticParams(params) {
     info.delete_time = 0
 
     if (params.positive) info.positive = params.positive
+
+    if (params.static_des) info.static_des = params.static_des
 
     resolve(info)
   })
@@ -180,7 +181,6 @@ function doGetStatic(info) {
 }
 
 function doUpdateStatic(info) {
-  console.log(info)
   return new Promise(function (resolve, reject) {
     dao.update(
       'StaticModel',
