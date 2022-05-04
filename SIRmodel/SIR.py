@@ -10,7 +10,7 @@ import sys
 
 beta = float(sys.argv[1])     #感染系数
 gamma = float(sys.argv[2])    #治愈系数
-delta = 5e-6	#新增的死亡系数
+delta  = float(sys.argv[5])	#新增的死亡系数
 TS = 1
 ND = 50.0  
 S0 = float(sys.argv[3])  #易感染人数

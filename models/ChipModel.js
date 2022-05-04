@@ -18,6 +18,7 @@ module.exports = function (db, callback) {
       cat_one_id: String,
       cat_two_id: String,
       cat_three_id: String,
+      cat_four_id: String,
     },
     {
       table: 'sp_chip',

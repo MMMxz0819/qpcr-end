@@ -46,19 +46,15 @@ function reportOne(cb) {
     if (err) return cb('获取报表数据失败')
     var resultDta = {}
     resultDta['result'] = _.map(result, function (result) {
-      return result //_.omit(order,);
+      return result
     })
     cb(err, resultDta)
   })
 }
 //日志
 function reportTwo(cb) {
-  // read contents of the file
   const data = fs.readFileSync('./cheese.log', 'UTF-8')
-
-  // split the contents by new line
   const lines = data.split(/\r?\n/)
-
   cb(null, lines)
 }
 
@@ -78,7 +74,13 @@ function reportFour(chip, start, end, cb) {
   let chipStatic = []
   dao.show('ChipModel', chip, function (err, result) {
     if (err) return cb('获取报表数据失败')
-    chipStatic = [result.cat_one_id, result.cat_two_id, result.cat_three_id]
+    chipStatic = [
+      result.cat_one_id,
+      result.cat_two_id,
+      result.cat_three_id,
+      Number(result.cat_four_id),
+    ]
+    console.log('aaaa', chipStatic)
     // cb(err, result.slice(length - 3, length))
   })
 
@@ -121,7 +123,7 @@ function reportFour(chip, start, end, cb) {
         statics.push(oneDay)
       })
 
-      if (chipStatic.filter((v) => v).length !== 3 || !resultDta.all.length) {
+      if (chipStatic.filter((v) => v).length !== 4 || !resultDta.all.length) {
         cb(err, {
           msg: '无法生成趋势图',
           res: resultDta,
@@ -163,7 +165,9 @@ function reportFour(chip, start, end, cb) {
         const output = execSync(
           `python D:/kejian/bs/qpcr-end/SIRmodel/SIR.py ${chipStatic[0]} ${
             chipStatic[1]
-          } ${chipStatic[2]} ${csvData[0].infecNow ? csvData[0].infecNow : 1}`
+          } ${chipStatic[2]} ${csvData[0].infecNow ? csvData[0].infecNow : 1} ${
+            chipStatic[3]
+          }`
         )
         // console.log('sync: ' + output.toString())
         console.log('over')
@@ -184,7 +188,6 @@ function reportFour(chip, start, end, cb) {
 }
 
 module.exports.reports = function (typeid, cb, chip, start, end) {
-  console.log(typeid)
   switch (parseInt(typeid)) {
     case 1:
       reportOne(function (err, result) {

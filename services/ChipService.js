@@ -92,9 +92,8 @@ function generateChipInfo(params) {
       info['line'] = ''
     }
 
-    // 图片
-    if (params.pics) {
-      info['pics'] = params.pics
+    if (params.cat_four_id) {
+      info['cat_four_id'] = params.cat_four_id
     }
 
     // 属性

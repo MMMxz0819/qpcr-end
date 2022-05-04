@@ -209,3 +209,24 @@
 [2022-05-01T22:27:30.469] [DEBUG] cheese - 添加检测数据: idundefined
 [2022-05-01T22:27:47.935] [DEBUG] cheese - 添加检测数据: idundefined
 [2022-05-01T22:28:09.061] [DEBUG] cheese - 添加检测数据: id298913
+[2022-05-03T20:25:28.668] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T20:25:28.924] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T20:25:54.019] [DEBUG] cheese - 添加检测数据: id298914
+[2022-05-03T22:25:18.534] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T22:25:35.387] [DEBUG] cheese - 用户登录： username:test
+[2022-05-03T22:25:40.114] [DEBUG] cheese - 用户登录： username:test
+[2022-05-03T22:25:40.125] [DEBUG] cheese - 用户登录： username:test
+[2022-05-03T22:25:41.181] [DEBUG] cheese - 用户登录： username:test
+[2022-05-03T22:25:46.985] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T22:26:31.283] [DEBUG] cheese - 用户登录： username:test
+[2022-05-03T22:29:41.571] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T22:29:57.326] [DEBUG] cheese - 用户登录： username:wwww
+[2022-05-03T22:30:12.736] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-03T22:52:42.155] [DEBUG] cheese - 添加芯片:testdeath
+[2022-05-03T22:54:52.786] [DEBUG] cheese - 添加芯片:testdeath
+[2022-05-03T22:56:12.741] [DEBUG] cheese - 添加芯片:testdeath
+[2022-05-03T22:59:10.949] [DEBUG] cheese - 添加芯片:testdeath
+[2022-05-03T23:06:02.830] [DEBUG] cheese - 删除芯片: id7
+[2022-05-04T08:50:08.460] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T10:13:51.476] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T20:01:36.717] [DEBUG] cheese - 用户登录： username:admin

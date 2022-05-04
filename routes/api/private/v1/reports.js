@@ -8,7 +8,6 @@ var authorization = require(path.join(process.cwd(), '/modules/authorization'))
 // 通过验证模块获取用户管理服务
 var reportsServ = authorization.getService('ReportsService')
 
-// /:typeid
 router.get(
   '/type',
   function (req, res, next) {
@@ -22,7 +21,6 @@ router.get(
   // 业务逻辑
   function (req, res, next) {
     if (req.query.chip) {
-      console.log('hasChip')
       reportsServ.reports(
         req.query.typeid,
         function (err, result) {
