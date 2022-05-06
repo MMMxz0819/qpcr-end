@@ -230,3 +230,24 @@
 [2022-05-04T08:50:08.460] [DEBUG] cheese - 用户登录： username:admin
 [2022-05-04T10:13:51.476] [DEBUG] cheese - 用户登录： username:admin
 [2022-05-04T20:01:36.717] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T22:10:21.251] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T22:12:18.858] [DEBUG] cheese - 添加芯片:test12
+[2022-05-04T22:17:30.849] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T22:17:52.665] [DEBUG] cheese - 添加检测数据: id298915
+[2022-05-04T22:38:07.789] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-04T22:45:36.629] [DEBUG] cheese - 添加检测数据: id298916
+[2022-05-05T10:25:42.431] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T10:26:34.938] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:13:01.460] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:13:22.417] [DEBUG] cheese - 删除检测数据: id298916
+[2022-05-05T17:14:11.322] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:16:41.902] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:16:56.463] [DEBUG] cheese - 添加检测数据: id298917
+[2022-05-05T17:32:05.446] [DEBUG] cheese - 删除检测数据: id298917
+[2022-05-05T17:32:24.049] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:33:11.957] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T17:33:24.059] [DEBUG] cheese - 添加检测数据: id298918
+[2022-05-05T21:17:57.384] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T21:19:04.008] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-05T21:19:37.617] [DEBUG] cheese - 用户登录： username:admin
+[2022-05-06T15:46:19.158] [DEBUG] cheese - 用户登录： username:admin
